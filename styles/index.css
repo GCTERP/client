@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* @import 'material-icons/iconfont/material-icons.css'; */
+@import 'material-symbols';
+
+* {
+    font-family: 'Montserrat';
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 48;
+}
+
+.filled {
+    font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 48;
+}
