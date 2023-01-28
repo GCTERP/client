@@ -19,3 +19,87 @@
 .filled {
     font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 48;
 }
+
+.top {
+    animation: top 3s infinite;
+}
+
+.left {
+    animation: left 3s infinite;
+}
+
+.bottom {
+    animation: bottom 3s infinite;
+}
+
+.right {
+    animation: right 3s infinite;
+}
+
+.top-left {
+    animation: top 3s infinite, left 3s infinite;
+    animation-delay: 1.5s;
+}
+
+.top-right {
+    animation: top 3s infinite, right 3s infinite;
+    animation-delay: 1.5s;
+}
+
+.bottom-left {
+    animation: bottom 3s infinite, left 3s infinite;
+    animation-delay: 1.5s;
+}
+
+.bottom-right {
+    animation: bottom 3s infinite, right 3s infinite;
+    animation-delay: 1.5s;
+}
+
+@keyframes top {
+    0% {
+        margin-top: 0px;
+    }
+    50% {
+        margin-top: -30px;
+    }
+    100% {
+        margin-top: 0px;
+    }
+}
+
+@keyframes left {
+    0% {
+        margin-left: 0px;
+    }
+    50% {
+        margin-left: -30px;
+    }
+    100% {
+        margin-left: 0px;
+    }
+}
+
+@keyframes bottom {
+    0% {
+        margin-top: 0px;
+    }
+    50% {
+        margin-top: 30px;
+    }
+    100% {
+        margin-top: 0px;
+    }
+}
+
+@keyframes right {
+    0% {
+        margin-left: 0px;
+    }
+    50% {
+        margin-left: 30px;
+    }
+    100% {
+        margin-left: 0px;
+    }
+}
