@@ -104,6 +104,24 @@
         },
         {
             "key": 7,
+            "route": "reports",
+            "name": "Reports",
+            "icon": "monitoring",
+            "menu": [
+                {
+                    "key": 1,
+                    "route": "internals",
+                    "name": "Internals"
+                },
+                {
+                    "key": 2,
+                    "route": "coa",
+                    "name": "CO Attainment"
+                }
+            ]
+        },
+        {
+            "key": 8,
             "route": "examination",
             "name": "Examination",
             "icon": "receipt_long",
@@ -126,14 +144,25 @@
             ]
         },
         {
-            "key": 8,
+            "key": 9,
             "route": "feedback",
             "name": "Feedback",
             "icon": "star",
-            "menu": null
+            "menu": [
+                {
+                    "key": 1,
+                    "route": "",
+                    "name": "Feedback"
+                },
+                {
+                    "key": 2,
+                    "route": "questions",
+                    "name": "Questions"
+                }
+            ]
         },
         {
-            "key": 9,
+            "key": 10,
             "route": "requests",
             "name": "Requests",
             "icon": "send",
@@ -271,7 +300,7 @@
             "menu": [
                 {
                     "key": 1,
-                    "route": "enrollment",
+                    "route": "",
                     "name": "Enrollment"
                 },
                 {
@@ -414,28 +443,17 @@
         },
         {
             "key": 2,
-            "route": "enrollment",
-            "name": "Enrollment",
-            "icon": "view_list",
-            "menu": [
-                {
-                    "key": 1,
-                    "route": "",
-                    "name": "Enrollment"
-                },
-                {
-                    "key": 2,
-                    "route": "registration",
-                    "name": "Registration"
-                }
-            ]
-        },
-        {
-            "key": 3,
             "route": "staff",
             "name": "Staff Allocation",
             "icon": "tips_and_updates",
             "menu": null
+        },
+        {
+            "key": 3,
+            "route": "timetable",
+            "name": "Timetable",
+            "icon": "table"
+
         },
         {
             "key": 4,
@@ -589,20 +607,13 @@
         },
         {
             "key": 2,
-            "route": "enrollment",
-            "name": "Enrollment",
-            "icon": "view_list",
-            "menu": null
-        },
-        {
-            "key": 3,
             "route": "attendance",
             "name": "Attendance",
             "icon": "fact_check",
             "menu": null
         },
         {
-            "key": 4,
+            "key": 3,
             "route": "timetable",
             "name": "Timetable",
             "icon": "table",
@@ -620,7 +631,7 @@
             ]
         },
         {
-            "key": 5,
+            "key": 4,
             "route": "internals",
             "name": "Internals",
             "icon": "rule",
@@ -633,31 +644,36 @@
                 {
                     "key": 2,
                     "route": "assignment",
-                    "name": "Assignments"
+                    "name": "Assignment"
                 },
                 {
                     "key": 3,
                     "route": "tutorial",
                     "name": "Tutorial"
+                },
+                {
+                    "key": 4,
+                    "route": "others",
+                    "name": "Others"
                 }
             ]
         },
         {
-            "key": 6,
+            "key": 5,
             "route": "coa",
             "name": "CO Attainment",
             "icon": "insert_chart",
             "menu": null
         },
         {
-            "key": 7,
+            "key": 6,
             "route": "result",
             "name": "Exam Result",
             "icon": "verified",
             "menu": null
         },
         {
-            "key": 8,
+            "key": 7,
             "route": "requests",
             "name": "Requests",
             "icon": "send",
@@ -715,7 +731,7 @@
                 {
                     "key": 2,
                     "route": "master",
-                    "name": "Master Timetable"
+                    "name": "Master Timetable"   
                 }
             ]
         },
@@ -746,6 +762,11 @@
                     "key": 3,
                     "route": "tutorial",
                     "name": "Tutorial"
+                },
+                {
+                    "key": 4,
+                    "route": "others",
+                    "name": "Others"
                 }
             ]
         },
