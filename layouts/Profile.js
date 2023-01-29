@@ -1,3 +1,5 @@
+import Dropdown from "../utilities/Dropdown.js"
+
 const Profile = () => {
     return <div>You are inside Profile</div>
 }
