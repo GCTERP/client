@@ -15,19 +15,19 @@ const App = ({ Component, pageProps }) => {
 
 	let user = router.pathname.split('/')[1]
 
-	const [ auth, setAuth ] = useState({ status: true, primaryRole: "admin", roles: [ "admin", "ttc", "fa", "ci" ] })
+	const [ auth, setAuth ] = useState({ status: true, primaryRole: "student", roles: [ "admin", "ttc", "fa", "ci" ] })
 
 	const Auth = useMemo(() => ({ auth, setAuth }), [auth, setAuth])
 
 	useEffect(() => {
 
-		if(!auth.status) router.push('/')
+		if(!auth.status) { router.replace('/'); return }
 
 		const valid = user == "" || (user == "student" && auth.primaryRole == "student") || auth.roles.some(ele => ele == user)
 
 		if(!valid) router.push('/')
 
-	}, [ ])
+	}, [ auth ])
 
   	return ( 
 		auth.status ?

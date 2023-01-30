@@ -5,7 +5,7 @@ const Admin = () => {
 
     const router = useRouter()
 
-    useEffect(() => { router.push('/student/internals/ut') }, [])
+    useEffect(() => { router.push('/student/internals/theory') }, [])
 
     return null
 }

@@ -1,7 +1,7 @@
 import { useState } from "react"
 import Icon from "../utilities/Icon"
 
-import ProfileMenu from "./ProfileMenu.js"
+import UserMenu from "./UserMenu.js"
 import Notification from "./Notification.js"
 
 const Header = () => {
@@ -20,7 +20,7 @@ const Header = () => {
                 <Icon name={`expand_${toggle ? "less" : "more"}`}/>
             </div>
             { notify && <Notification /> }
-            { toggle && <ProfileMenu /> }
+            { toggle && <UserMenu /> }
         </div>
     )
 }
