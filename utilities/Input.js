@@ -12,8 +12,8 @@
 const Input = ({ name, type, color = "stone", value, update, size, required, disabled }) => {
     return ( 
         <div className={`relative group ${size}`}>
-            <label htmlFor={name.toLowerCase()} className={`absolute ease-in duration-150 px-1 left-2 group-focus-within:-top-2 top-2 group-focus-within:text-xs text-sm group-focus-within:bg-white text-${color}-400`}>{name}</label>
-            <input name={name.toLowerCase()} type={type} value={value} onChange={(e) => update(e.target.value)} className={`rounded border w-full p-2 pl-3 focus:outline-none text-sm border-${color}-400`} autoComplete="off" required={required} disabled={disabled}/>
+            <label htmlFor={name.toLowerCase()} className={`absolute ease-in duration-150 px-1 left-2 group-focus-within:text-${color}-500 group-focus-within:font-bold group-focus-within:-top-2 top-2 group-focus-within:text-xs group-focus-within:bg-white text-sm ${value != "" && "-top-2 text-xs bg-white"}`}>{name}</label>
+            <input name={name.toLowerCase()} type={type} value={value} onChange={(e) => update(e.target.value)} className={`rounded border group-focus-within:border-${color}-500 w-full p-2 pl-3 focus:outline-none text-sm`} autoComplete="off" required={required} disabled={disabled}/>
         </div>
     );
 }

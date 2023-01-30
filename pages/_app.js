@@ -5,6 +5,7 @@ import "../styles/index.css"
 import "@fontsource/montserrat"
 
 import Layout from "../layouts/Layout"
+import Authentication from "../auth"
 
 export const AuthContext = createContext(null)
 
@@ -12,30 +13,29 @@ const App = ({ Component, pageProps }) => {
 
 	const router = useRouter()
 
-	console.log(router.pathname)
+	let user = router.pathname.split('/')[1]
 
-	const [ auth, setAuth ] = useState({ status: true, role: "admin" })
+	const [ auth, setAuth ] = useState({ status: true, primaryRole: "admin", roles: [ "admin", "ttc", "fa", "ci" ] })
 
 	const Auth = useMemo(() => ({ auth, setAuth }), [auth, setAuth])
 
-	useEffect(() => { if(!auth.status) router.push('/auth') }, [])
+	useEffect(() => {
 
-	const Template = ({ path, props }) => {
+		if(!auth.status) router.push('/')
 
-		if(path.startsWith('/auth'))
-			return <Component {...props}/>
-		
-		return (
-			<Layout profile={path.endsWith('/profile')}>
-				<Component {...props}/>
-			</Layout>
-		)
-	}
+		const valid = user == "" || (user == "student" && auth.primaryRole == "student") || auth.roles.some(ele => ele == user)
+
+		if(!valid) router.push('/')
+
+	}, [ ])
 
   	return ( 
+		auth.status ?
     	<AuthContext.Provider value={Auth}>
-			<Template path={router.pathname} props={pageProps}/>
-    	</AuthContext.Provider>
+			<Layout profile={router.pathname.endsWith('/profile')}>
+				<Component {...pageProps}/>
+			</Layout>
+    	</AuthContext.Provider> : <Authentication />
   	)
 }
  

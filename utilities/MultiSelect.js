@@ -8,10 +8,10 @@ import Select from "react-select"
  */
 const MultiSelect = ({ name, data, selectedData }) => {
 
-    const options = data.map(ele => ({ value: ele, label: ele }))
+    const options = data.map(val => ({ value: val, label: val }))
 
     return ( 
-        <div className="pl-10 group">
+        <div className="group">
             <div className='flex items-center justify-start pl-2'>
                 <div className='-mb-2.5 z-10'>
                     <span className='bg-white text-gray-400 group-focus-within:font-bold group-focus-within:text-blue-500 text-sm px-1'>{name}</span>

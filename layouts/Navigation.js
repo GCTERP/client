@@ -3,12 +3,13 @@ import Link from "next/link"
 
 import routes from "../utilities/routes"
 import Icon from "../utilities/Icon"
+import logo from "../public/logo.svg"
 
 const Title = () => {
     return ( 
         <div className="flex place-content-center border-r">
             <div className="grid place-content-center w-1/3">
-                {/* <Image src={logo} width={35} height={35} alt="GCT"/> */}
+                <Image src={logo} width={25} height={25} alt="GCT"/>
             </div>
             <div className="grid items-center w-2/3 text-xl font-black">
                 <span>GCTERP</span>

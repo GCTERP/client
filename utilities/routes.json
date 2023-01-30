@@ -545,23 +545,23 @@
             "menu": [
                 {
                     "key": 1,
-                    "route": "ut",
-                    "name": "Unit Test"
+                    "route": "theory",
+                    "name": "Theory"
                 },
                 {
                     "key": 2,
-                    "route": "assignment",
-                    "name": "Assignment"
+                    "route": "practical",
+                    "name": "Practical"
                 },
                 {
                     "key": 3,
-                    "route": "tutorial",
-                    "name": "Tutorial"
+                    "route": "hybrid",
+                    "name": "Hybrid"
                 },
                 {
                     "key": 4,
-                    "route": "others",
-                    "name": "Others"
+                    "route": "project",
+                    "name": "Project"
                 }
             ]
         },

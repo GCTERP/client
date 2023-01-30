@@ -49,7 +49,7 @@ const Calendar = ({ selectDate }) => {
                             isEqual(day, selectedDay) && 'text-white',
                             !isEqual(day, selectedDay) &&
                                 isToday(day) &&
-                                'text-blue-500',
+                                'border border-blue-500 font-light',
                             !isEqual(day, selectedDay) &&
                                 !isToday(day) &&
                                 isSameMonth(day, firstDayCurrentMonth) &&
@@ -61,7 +61,7 @@ const Calendar = ({ selectDate }) => {
                             isEqual(day, selectedDay) && isToday(day) && 'bg-blue-500',
                             isEqual(day, selectedDay) &&
                                 !isToday(day) &&
-                                'bg-gray-900',
+                                'bg-blue-500',
                             !isEqual(day, selectedDay) && 'hover:bg-gray-200',
                             (isEqual(day, selectedDay) || isToday(day)) &&
                                 'font-semibold',
