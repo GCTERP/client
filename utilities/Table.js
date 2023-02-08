@@ -4,10 +4,10 @@
  */
 const Table = ({ data }) => {
 
-    const fields = data ? Object.keys(data[0]) : []
+    const fields = data && data.length > 0 ? Object.keys(data[0]) : []
 
     return (
-        data &&
+        data && (data.length > 0 ?
         <div className="relative p-1.5 w-fit inline-block align-middle">
             <div className=" overflow-hidden overflow-x-auto shadow-md sm:rounded-lg border">
                 <table className="min-w-full divide-y divide-gray-200 text-sm text-left sm:rounded-lg">
@@ -26,14 +26,14 @@ const Table = ({ data }) => {
                             <tr className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap hover:bg-sky-50" key={index}>
                                 {
                                     fields.map((key, index) => (
-                                    <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap" key={index}>{row[key]}</td> ))
+                                    <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap" key={index}>{ typeof(row[key]) == typeof("") ? row[key].charAt(0).toUpperCase() + row[key].slice(1) : row[key] }</td> ))
                                 }
                             </tr>))
                         }
                     </tbody>
                 </table>
             </div>
-        </div>
+        </div> : <div>No Data Here...</div>)
     );
 }
 
