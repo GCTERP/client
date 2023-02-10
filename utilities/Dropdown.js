@@ -23,7 +23,7 @@ const Dropdown = ({name, data, update, special}) => {
             </div>
             <ul className={`absolute z-10 bg-white mt-1 bg-white px-3 -ml-2 border-blue-500 py-1 w-fit ${expand ? "" : "hidden"}`}>
             {
-                data.map((ele, idx) => <li onClick={() => { setOption(data[idx]); update(data[idx]); setExpand(false) }} className={`text-sm cursor-pointer text-slate-400 hover:text-opacity-80 rounded p-1 my-1 hover:bg-blue-50 hover:text-blue-500 ${option == data[idx] && "text-blue-500 bg-blue-50"}`}>{ typeof(ele) == typeof(1) ? ele : ele.charAt(0).toUpperCase() + ele.slice(1) }</li>)
+                data.map((ele, idx) => <li key={idx} onClick={() => { setOption(data[idx]); update(data[idx]); setExpand(false) }} className={`text-sm cursor-pointer text-slate-400 hover:text-opacity-80 rounded p-1 my-1 hover:bg-blue-50 hover:text-blue-500 ${option == data[idx] && "text-blue-500 bg-blue-50"}`}>{ typeof(ele) == typeof(1) ? ele : ele.charAt(0).toUpperCase() + ele.slice(1) }</li>)
             }
             </ul>
         </div></> :
@@ -35,7 +35,7 @@ const Dropdown = ({name, data, update, special}) => {
             </div>
             <ul className={`absolute z-10 bg-white px-2 py-1 w-fit rounded-md shadow-md ${expand ? "" : "hidden"}`}>
             {
-                data.map((ele, idx) => <li onClick={() => { setOption(data[idx]); update(data[idx]); setExpand(false) }} className={`text-sm cursor-pointer text-slate-400 hover:text-opacity-80 rounded p-1 my-1 hover:bg-blue-50 hover:text-blue-500 ${option == data[idx] && "text-blue-500 bg-blue-50"}`}>{ typeof(ele) == typeof(1) ? ele : ele.charAt(0).toUpperCase() + ele.slice(1)  }</li>)
+                data.map((ele, idx) => <li key={idx} onClick={() => { setOption(data[idx]); update(data[idx]); setExpand(false) }} className={`text-sm cursor-pointer text-slate-400 hover:text-opacity-80 rounded p-1 my-1 hover:bg-blue-50 hover:text-blue-500 ${option == data[idx] && "text-blue-500 bg-blue-50"}`}>{ typeof(ele) == typeof(1) ? ele : ele.charAt(0).toUpperCase() + ele.slice(1)  }</li>)
             }
             </ul>
         </div>
