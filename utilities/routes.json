@@ -8,16 +8,11 @@
             "menu": [
                 {
                     "key": 1,
-                    "route": "",
-                    "name": "Users"
-                },
-                {
-                    "key": 2,
                     "route": "students",
                     "name": "Students"
                 },
                 {
-                    "key": 3,
+                    "key": 2,
                     "route": "faculty",
                     "name": "Faculty"
                 }
@@ -342,7 +337,18 @@
             "route": "staff",
             "name": "Staff Allocation",
             "icon": "tips_and_updates",
-            "menu": null
+            "menu": [
+                {
+                    "key": 1,
+                    "route": "theory",
+                    "name": "Theory"
+                },
+                {
+                    "key": 2,
+                    "route": "practical",
+                    "name": "Practical"
+                }
+            ]
         },
         {
             "key": 3,
@@ -356,13 +362,6 @@
             "route": "ut",
             "name": "UT Schedule",
             "icon": "table_view",
-            "menu": null
-        },
-        {
-            "key": 5,
-            "route": "groups",
-            "name": "Groups",
-            "icon": "group_add",
             "menu": null
         }
     ],

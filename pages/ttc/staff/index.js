@@ -1,13 +1,13 @@
 import { useRouter } from "next/router"
 import { useEffect } from "react"
 
-const Users = () => {
+const Staff = () => {
 
     const router = useRouter()
     
-    useEffect(() => { router.push('/admin/users/students') }, [])
+    useEffect(() => { router.push('/ttc/staff/theory') }, [])
 
     return  null
 }
 
-export default Users
+export default Staff
