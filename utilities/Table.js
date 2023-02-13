@@ -30,8 +30,8 @@ const Table = ({ data, editable, update, omit = [ "_id" ] }) => {
     const Editor = ({index, open}) => {
 
         return ( open != 1
-            ? <td onClick={() => open == 0 && mutate(index, 1, false)} className={`px-6 py-4 text-center text-sm text-gray-${open == 0 ? "100" : "500"} whitespace-nowrap`}><Icon name="edit"/></td>
-            : open == 1 && <td className="flex space-x-2 px-4 py-4 text-center text-sm text-gray-500 whitespace-nowrap">
+            ? <td onClick={() => open == 0 && mutate(index, 1, false)} className={`px-4 py-2 text-center text-gray-${open == 0 ? "100" : "500"} ${open == 0 && "hover:text-blue-500"} whitespace-nowrap`}><Icon name="edit"/></td>
+            : open == 1 && <td className="flex space-x-2 px-4 py-2 text-center text-gray-500 whitespace-nowrap">
                 <div onClick={() => mutate(index, 0)} className="text-red-500"><Icon name="close"/></div>
                 <div onClick={() => {mutate(index, 0); update({...values})}} className="text-blue-500"><Icon name="done"/></div>
             </td>
@@ -65,17 +65,17 @@ const Table = ({ data, editable, update, omit = [ "_id" ] }) => {
                         {
                            data.map((row, ridx) => (
                             <tr className={`px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap group hover:bg-sky-50`} key={ridx}>
-                                <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">{ ridx + 1 }</td>
-                                {
-                                    fields.map((key, kidx) => ( edit[ridx] != 1 
-                                    ? <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap" key={kidx}>{ typeof(row[key]) == typeof("") ? row[key].charAt(0).toUpperCase() + row[key].slice(1) : row[key] }</td>
-                                    : <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap" key={kidx}>
-                                        <input type="text" name={key} size={setSize(values[key])} value={values[key]} onChange={(e) => { values[key] = e.target.value; setValues({...values}) }} className="group-hover:bg-sky-50 outline-none"/>
+                              <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">{ ridx + 1 }</td>
+                              {
+                                  fields.map((key, kidx) => ( edit[ridx] != 1 
+                                  ? <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap" key={kidx}>{ typeof(row[key]) == typeof("") ? row[key].charAt(0).toUpperCase() + row[key].slice(1) : row[key] }</td>
+                                  : <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap" key={kidx}>
+                                      <input type="text" name={key} size={setSize(values[key])} value={values[key]} onChange={(e) => { values[key] = e.target.value; setValues({...values}) }} className="group-hover:bg-sky-50 outline-none"/>
                                     </td>
-                                    ))
-                                }
-                                { editable && <Editor index={ridx} open={edit[ridx]}/> }
-                            </tr>))
+                                  ))
+                              }
+                              { editable && <Editor index={ridx} open={edit[ridx]}/> }
+                             </tr>))
                         }
                     </tbody>
                 </table>
