@@ -4,6 +4,8 @@ import Icon from "./Icon"
 /**
  * Search for specific values
  * @param options @type [String] - Collection of any String
+ * @param filter @type String - Filter Parameter
+ * @param setFilter @type Function - React `setState` method signature
  * @param search @type String - Search argument
  * @param update @type Function - React `setState` method signature
  */
