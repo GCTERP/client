@@ -49,7 +49,7 @@ const Table = ({ data, editable, update, omit = [ "_id" ] }) => {
 
     return (
         data && (data.length > 0 ?
-            <div className="w-full h-4/5 overflow-auto mr-2 rounded-b-lg shadow-md align-middle border rounded-t-lg">
+            <div className="max-w-full max-h-[80%] overflow-auto overscroll-none mr-2 rounded-b-lg shadow-md align-middle border rounded-t-lg">
                 <table className="table-auto divide-y divide-gray-200 text-sm text-left">
                     <thead className="bg-gray-100 text-xs uppercase">
                         <tr>
@@ -61,7 +61,7 @@ const Table = ({ data, editable, update, omit = [ "_id" ] }) => {
                             { editable && <th className="px-5 py-3 text-gray-600 text-left text-xs font-semibold rounded-tr-lg uppercase">Action</th> }
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200 max-h-50 overflow-y">
+                    <tbody className="divide-y divide-gray-200">
                         {
                            data.map((row, ridx) => (
                             <tr className={`px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap group hover:bg-sky-50`} key={ridx}>
