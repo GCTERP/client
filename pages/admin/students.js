@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 
+import Download from "../../utilities/Download"
 import Dropdown from "../../utilities/Dropdown"
-import Button from "../../utilities/Button"
+import Upload from "../../utilities/Upload"
 import Search from "../../utilities/Search"
 import Table from "../../utilities/Table"
 
@@ -20,6 +21,8 @@ const Students = () => {
 
     const [ data, setData ] = useState(null)
     const [ editedDoc, setEditedDoc ] = useState({})
+
+    const [ file, setFile ] = useState(null)
 
     useEffect(() => {
 
@@ -61,8 +64,8 @@ const Students = () => {
         </div><br/>
         <Table editable data={data.filter(doc => filterCheck(doc))} update={setEditedDoc} omit={omit}/><br/>
         <div className="flex mt-2 space-x-10">
-            <Button name="Upload" icon="upload" color="blue"/>
-            <Button name="Download" icon="download" color="blue"/>
+            <Upload file={file} setFile={setFile}/>
+            <Download blob={null}/>
         </div></>
     )
 }
