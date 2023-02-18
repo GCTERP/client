@@ -1,18 +1,35 @@
+import axios from "axios"
 import Image from "next/image"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import spreadsheet from "../assets/spreadsheet.png"
 import upload from "../assets/upload.png"
+import Button from "./Button"
 import Icon from "./Icon"
 
 /**
  * Default file upload component
- * @param file @type Blob - Any file bytestore
- * @param setFile @type Function - React `setState` method signature
+ * @param url @type URL - Server endpoint for upload
  */
-const Upload = ({ file, setFile }) => {
+const Upload = ({ url }) => {
 
+    const [ sent, isSent ] = useState(false)
+    const [ file, setFile ] = useState(null)
     const [ closed, isClosed ] = useState(true)
+    const [ trigger, setTrigger ] = useState(false)
+
+    useEffect(() => {
+
+        if(trigger)
+            axios.post('http://192.168.110.175:5000/admin/upload/students', { students: file }, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then(response => {
+                isSent(true)
+            }).catch(err => console.log(err.message))
+
+    }, [ trigger ])
 
     return (
         closed ? 
@@ -31,7 +48,15 @@ const Upload = ({ file, setFile }) => {
                     </div>
                     { file ? file.name : "Select File (.xls, .xlsx)" }
                 </label>
-                { file && <div className="text-center text-slate-500 text-xs mb-5 cursor-pointer" onClick={() => setFile(null)}>Cancel</div> }
+                {   file && 
+                    <div className="w-fit m-auto my-3 flex space-x-5">
+                        {   !sent ? <>
+                            <Button color="blue" name="Send" event={() => setTrigger(true)}/>
+                            <Button color="blue" name="Cancel" event={() => isClosed(true)} outline/></> :
+                            <div className="bg-slate-400 rounded p-2 border pointer-events-none text-white">Sent</div>
+                        }
+                    </div> 
+                }
                 <input id="upload" type="file" onChange={(e) => setFile(e.target.files[0])} className="text-sm border flex h-0 w-0 invisible"/>
             </div>
         </div>
