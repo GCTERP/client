@@ -15,9 +15,9 @@ const App = ({ Component, pageProps }) => {
 
 	let user = router.pathname.split('/')[1]
 
-	const [ auth, setAuth ] = useState({ status: true, primaryRole: "admin", roles: [ "admin", "hod", "pc", "ttc", "fa", "ci" ] })
+	//const [ auth, setAuth ] = useState({ status: true, primaryRole: "admin", roles: [ "admin", "hod", "pc", "ttc", "fa", "ci" ] })
 
-	// const [ auth, setAuth ] = useState({ status: true, primaryRole: "student", roles: [ ] })
+	const [ auth, setAuth ] = useState({ status: true, primaryRole: "student", roles: [ ] })
 
 	const Auth = useMemo(() => ({ auth, setAuth }), [auth, setAuth])
 
