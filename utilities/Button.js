@@ -10,7 +10,7 @@ import Icon from "../utilities/Icon.js"
  */
 const Button = ({ color, name, icon, outline, event }) => {
     return (
-        <div onClick={() => event()} className={`flex w-fit py-2 px-2 rounded-md cursor-pointer font-semibold text-sm items-center ${outline ? "text-" + color + "-500" : "text-white"} border ${outline ? "border" : "bg"}-${color}-500`}>
+        <div onClick={event} className={`flex w-fit py-2 px-2 rounded-md cursor-pointer font-semibold text-sm items-center ${outline ? "text-" + color + "-500" : "text-white"} border ${outline ? "border" : "bg"}-${color}-500`}>
             { icon && <Icon name={icon}/> }
             <div className="px-1">{ name }</div>
         </div>

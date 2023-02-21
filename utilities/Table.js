@@ -49,7 +49,7 @@ const Table = ({ data, editable, update, omit = [ "_id" ] }) => {
 
     return (
         data && (data.length > 0 ?
-            <div className="max-w-full max-h-[80%] overflow-auto overscroll-none mr-2 rounded-b-lg shadow-md align-middle border rounded-t-lg">
+            <div className="max-w-min max-h-[80%] overflow-auto overscroll-none mr-2 rounded-b-lg shadow-md align-middle border rounded-t-lg">
                 <table className="table-auto divide-y divide-gray-200 text-sm text-left">
                     <thead className="bg-gray-100 text-xs uppercase">
                         <tr>
