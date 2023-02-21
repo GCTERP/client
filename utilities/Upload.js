@@ -21,12 +21,12 @@ const Upload = ({ url }) => {
     useEffect(() => {
 
         if(trigger)
-            axios.post('http://192.168.110.175:5000/admin/upload/students', { students: file }, {
+            // axios.post('http://192.168.110.175:5000/admin/upload/students', { students: file }, {
+            axios.post(url, { students: file }, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
-            }).then(response => {
-                isSent(true)
+            }).then(response => { isSent(true)
             }).catch(err => console.log(err.message))
 
     }, [ trigger ])

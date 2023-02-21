@@ -25,15 +25,13 @@ const Students = () => {
 
     useEffect(() => {
 
-        axios.get('http://192.168.110.175:5000/admin/students', { params: { batch } })
+        axios.get('http://192.168.146.175:5000/admin/students', { params: { batch } })
             .then(response => {
-                let data = response.data, fields = []
-                if(data.length > 0) {
-                    fields = Object.keys(data[0]).filter(key => omitFields(key))
-                    setFilter(fields[0])
-                    setFields(fields)
-                    setData(data)
-                }
+                let data = response.data, fields = []    
+                fields = Object.keys(data[0]).filter(key => omitFields(key))
+                setFilter(fields[0])
+                setFields(fields)
+                setData(data)
             })
             .catch(err => console.log(err.message))
 
@@ -43,7 +41,7 @@ const Students = () => {
         if(JSON.stringify(editedDoc) != "{}")
             for(let idx in data)
                 if(data[idx]._id == editedDoc._id) {
-                    axios.put('http://192.168.110.175:5000/admin/update/student', editedDoc)
+                    axios.put('http://192.168.146.175:5000/admin/student/update', editedDoc)
                         .then(response => {
                             data[idx] = {...editedDoc}
                             setData([...data])
@@ -53,7 +51,7 @@ const Students = () => {
     
     const filterSearch = (doc) => doc[filter.charAt(0).toLowerCase() + filter.slice(1)].toString().toLowerCase().includes(search.toString().toLowerCase())
 
-    const filterCheck = (doc) => (batch == "ALL" ? true : doc.batch == batch) && (branch == "ALL" ? true : doc.branch == branch) && (type == "ALL" ? true : doc.type.toLowerCase() == type.toLowerCase()) && filterSearch(doc)
+    const filterCheck = (doc) => (doc.batch == batch) && (branch == "ALL" ? true : doc.branch == branch) && (type == "ALL" ? true : doc.type.toLowerCase() == type.toLowerCase()) && filterSearch(doc)
 
     return ( data ? <>
         <div className="mr-2 flex justify-between">
@@ -62,9 +60,9 @@ const Students = () => {
                 <Dropdown name="Branch" update={setBranch} data={[ "ALL", "CIVIL", "MECH", "ECE", "EEE", "EIE", "CSE", "IT", "IBT" ]} />
                 <Dropdown name="Type" update={setType} data={[ "ALL", "regular", "lateral", "transfer" ]}/> 
             </div>
-            <Search options={fields.map(key => key.charAt(0).toUpperCase() + key.slice(1))} filter={filter} setFilter={setFilter} search={search} update={setSearch}/>
+            <Search options={fields} filter={filter} setFilter={setFilter} search={search} update={setSearch}/>
             <div className="flex mt-2 space-x-2">
-                <Upload url={'http://192.168.110.175:5000/admin/upload/students'}/>
+                <Upload url={'http://192.168.110.175:5000/admin/students/upload'}/>
                 <Download ids={data.filter(doc => filterCheck(doc)).map(doc => doc._id)} name="students"/>
             </div>
         </div><br/>

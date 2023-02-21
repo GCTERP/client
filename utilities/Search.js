@@ -5,9 +5,9 @@ import Icon from "./Icon"
  * Search for specific values
  * @param options @type [String] - Collection of any String
  * @param filter @type String - Filter Parameter
- * @param setFilter @type Function - React `setState` method signature
+ * @param setFilter @type Function - React `setState` for filter
  * @param search @type String - Search argument
- * @param update @type Function - React `setState` method signature
+ * @param update @type Function - React `setState` for search
  */
 const Search = ({ options, filter, setFilter, search, update }) => {
 
@@ -23,7 +23,7 @@ const Search = ({ options, filter, setFilter, search, update }) => {
                 </div>
                 <ul className={`absolute z-10 bg-white rounded shadow px-2 py-1 -ml-1 mt-2 ${open ? "" : "hidden"}`}>
                     {
-                        options.map((choice, idx) => <li onClick={() => { setFilter(choice); setOpen(false) }} key={idx} className={`text-sm p-1 my-1 rounded cursor-pointer ${filter == choice ? "bg-blue-50 text-blue-500" : "text-slate-400"} hover:bg-blue-50 hover:text-blue-500`}>{ choice }</li>)
+                        options.map((choice, idx) => <li onClick={() => { setFilter(choice.toLowerCase()); setOpen(false) }} key={idx} className={`text-sm p-1 my-1 rounded cursor-pointer ${filter == choice ? "bg-blue-50 text-blue-500" : "text-slate-400"} hover:bg-blue-50 hover:text-blue-500`}>{ choice.charAt(0).toUpperCase() + choice.slice(1) }</li>)
                     }
                 </ul>
             </div>
