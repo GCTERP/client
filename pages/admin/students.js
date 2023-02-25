@@ -63,7 +63,7 @@ const Students = () => {
             <Search options={fields} filter={filter} setFilter={setFilter} search={search} update={setSearch}/>
             <div className="flex mt-2 space-x-2">
                 <Upload url={'http://192.168.110.175:5000/admin/students/upload'}/>
-                <Download ids={data.filter(doc => filterCheck(doc)).map(doc => doc._id)} name="students"/>
+                <Download url={'http://192.168.110.175:5000/admin/download/students'} ids={data.filter(doc => filterCheck(doc)).map(doc => doc._id)} name="students"/>
             </div>
         </div><br/>
         <Table editable data={data.filter(doc => filterCheck(doc))} update={setEditedDoc} omit={omit}/><br/>

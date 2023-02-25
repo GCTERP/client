@@ -7,11 +7,12 @@ import Icon from "./Icon"
 
 /**
  * Default download file component
+ * @param url @type String - URL for Server Endpoint
  * @param ids @type [String] - Collection of doc _ids
  * @param name @type String - Name of downloaded file
  */
 
-const Download  = ({ ids, name = "data" }) => {
+const Download  = ({ url, ids, name = "data" }) => {
 
     const [ closed, setClosed ] = useState(true)
     const [ blob, setBlob ] = useState(null)
@@ -19,7 +20,7 @@ const Download  = ({ ids, name = "data" }) => {
     useEffect(() => {
 
         if(!closed)
-            axios.get('http://192.168.110.175:5000/admin/download/students', { params: { ids }, responseType: "blob" })
+            axios.get(url, { params: { ids }, responseType: "blob" })
                 .then(response => {
                     setBlob(response.data)
                 }).catch(err => console.log(err.message))
