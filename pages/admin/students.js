@@ -25,7 +25,7 @@ const Students = () => {
 
     useEffect(() => {
 
-        axios.get('http://localhost:5000/students', { params: { batch } })
+        axios.get(process.env.NEXT_PUBLIC_URL + '/admin/students', { params: { batch } })
             .then(response => {
                 let data = response.data, fields = []    
                 fields = Object.keys(data[0]).filter(key => omitFields(key))
@@ -41,7 +41,7 @@ const Students = () => {
         if(JSON.stringify(editedDoc) != "{}")
             for(let idx in data)
                 if(data[idx]._id == editedDoc._id) {
-                    axios.put('http://192.168.146.175:5000/admin/student/update', editedDoc)
+                    axios.put(process.env.NEXT_PUBLIC_URL + '/admin/student/update', editedDoc)
                         .then(response => {
                             data[idx] = {...editedDoc}
                             setData([...data])
@@ -62,8 +62,8 @@ const Students = () => {
             </div>
             <Search options={fields} filter={filter} setFilter={setFilter} search={search} update={setSearch}/>
             <div className="flex mt-2 space-x-2">
-                <Upload url={'http://192.168.110.175:5000/admin/students/upload'}/>
-                <Download url={'http://192.168.110.175:5000/admin/download/students'} ids={data.filter(doc => filterCheck(doc)).map(doc => doc._id)} name="students"/>
+                <Upload url={process.env.NEXT_PUBLIC_URL + '/admin/students/upload'}/>
+                <Download url={process.env.NEXT_PUBLIC_URL + '/admin/download/students'} ids={data.filter(doc => filterCheck(doc)).map(doc => doc._id)} name="students"/>
             </div>
         </div><br/>
         <Table editable data={data.filter(doc => filterCheck(doc))} update={setEditedDoc} omit={omit}/><br/>
