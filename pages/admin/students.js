@@ -25,7 +25,7 @@ const Students = () => {
 
     useEffect(() => {
 
-        axios.get('http://192.168.146.175:5000/admin/students', { params: { batch } })
+        axios.get('http://localhost:5000/students', { params: { batch } })
             .then(response => {
                 let data = response.data, fields = []    
                 fields = Object.keys(data[0]).filter(key => omitFields(key))

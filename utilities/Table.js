@@ -8,8 +8,9 @@ import Icon from "./Icon"
  * @param editable @type Boolean - Allow table to mutate data
  * @param update @type Function - React `setState` method signature
  * @param omit @type [String] - String of keys to be omitted
+ * @param indexed @type Boolean - Allow table to show index
  */
-const Table = ({ data, editable, update, omit = [ "_id" ] }) => {
+const Table = ({ data, editable, update, omit = [ "_id" ], indexed }) => {
 
     const omitFields = (field) => !omit.some(item => item == field)
 
@@ -53,7 +54,7 @@ const Table = ({ data, editable, update, omit = [ "_id" ] }) => {
                 <table className="table-auto divide-y divide-gray-200 text-sm text-left">
                     <thead className="bg-gray-100 text-xs uppercase">
                         <tr>
-                            <th className="px-5 py-3 text-gray-600 text-left text-xs font-semibold first:rounded-tl-lg uppercase">sno</th>
+                            { indexed && <th className="px-5 py-3 text-gray-600 text-left text-xs font-semibold first:rounded-tl-lg uppercase">sno</th> }
                             {
                                 fields.map((heading, index) => (
                                     <th className="px-5 py-3 text-gray-600 text-left text-xs font-semibold uppercase" key={index}>{heading}</th> ))
@@ -65,7 +66,7 @@ const Table = ({ data, editable, update, omit = [ "_id" ] }) => {
                         {
                            data.map((row, ridx) => (
                             <tr className={`px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap group hover:bg-sky-50`} key={ridx}>
-                              <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">{ ridx + 1 }</td>
+                              { indexed && <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">{ ridx + 1 }</td> }
                               {
                                   fields.map((key, kidx) => ( edit[ridx] != 1 
                                   ? <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap" key={kidx}>{ typeof(row[key]) == typeof("") ? row[key].charAt(0).toUpperCase() + row[key].slice(1) : row[key] }</td>
