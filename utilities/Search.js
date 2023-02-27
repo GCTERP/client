@@ -21,7 +21,7 @@ const Search = ({ options, filter, setFilter, search, update }) => {
                     <div className="pt-0.5">{ filter.charAt(0).toUpperCase() + filter.slice(1) }</div>
                     <Icon name={`expand_${open ? "less" : "more"}`}/>
                 </div>
-                <ul className={`absolute z-10 bg-white rounded shadow px-2 py-1 -ml-1 mt-2 ${open ? "" : "hidden"}`}>
+                <ul className={`absolute max-h-64 overflow-auto overscroll-none z-10 bg-white rounded shadow px-2 py-1 -ml-1 mt-2 ${open ? "" : "hidden"}`}>
                     {
                         options.map((choice, idx) => <li onClick={() => { setFilter(choice.toLowerCase()); setOpen(false) }} key={idx} className={`text-sm p-1 my-1 rounded cursor-pointer ${filter == choice ? "bg-blue-50 text-blue-500" : "text-slate-400"} hover:bg-blue-50 hover:text-blue-500`}>{ choice.charAt(0).toUpperCase() + choice.slice(1) }</li>)
                     }

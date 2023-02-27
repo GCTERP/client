@@ -20,7 +20,7 @@ const BranchForm = ({ setOpen }) => {
 
         if(submit) {
             let data = { branch, launchDate: launch, code, name, key, capacity: cap }
-            axios.post('http://192.168.146.175:5000/admin/branch/manage', data)
+            axios.post(process.env.NEXT_PUBLIC_URL + '/admin/branch/manage', data)
                 .then(response => { setSubmit(false); setOpen(false) })
                 .catch(err => console.log(err.message))
         }
@@ -29,7 +29,7 @@ const BranchForm = ({ setOpen }) => {
 
     return (
         <div className="absolute w-fit bg-white rounded-lg shadow-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <div className="absolute text-slate-400 hover:text-red-500 top-4 right-2" onClick={() => setOpen(false)}>
+            <div className="absolute cursor-pointer text-red-500 top-4 right-2" onClick={() => setOpen(false)}>
                 <Icon name="close"/>
             </div>
             <div className="text-xl font-bold w-fit m-auto my-4">Create New Branch</div><hr/>
@@ -45,7 +45,7 @@ const BranchForm = ({ setOpen }) => {
                 <Input name="Branch Key" type="text" color="blue" value={key} update={setKey}/>
                 <Input name="Launch Date" type="date" color="blue" value={launch} update={setLaunch}/>
             </div><hr/>
-            <div onClick={() => setSubmit(true)} className={`py-2 px-2 rounded-md cursor-pointer font-semibold text-sm m-4 text-center items-center text-white ${submit ? "bg-slate-400" : "bg-blue-500"}`} disabled={submit ? "disabled" : ""}>Submit</div>
+            <div onClick={() => setSubmit(true)} className={`py-2 px-2 rounded-md cursor-pointer font-semibold text-sm m-4 text-center items-center text-white ${submit ? "bg-slate-400" : "bg-blue-500"}`} disabled={submit ? "disabled" : ""}>Launch</div>
         </div>
     )
 }
@@ -58,7 +58,7 @@ const Branches = () => {
 
     useEffect(() => {
 
-        axios.get('http://192.168.146.175:5000/admin/branch')
+        axios.get(process.env.NEXT_PUBLIC_URL + '/admin/branch')
             .then(response => {
                 let data = response.data
                 for(let idx in data)
@@ -73,7 +73,7 @@ const Branches = () => {
         if(JSON.stringify(editedDoc) != "{}")
             for(let idx in data)
                 if(data[idx]._id == editedDoc._id) {
-                    axios.post('http://192.168.146.175:5000/admin/branch/manage', editedDoc)
+                    axios.post(process.env.NEXT_PUBLIC_URL + '/admin/branch/manage', editedDoc)
                         .then(response => {
                             data[idx] = {...editedDoc}
                             setData([...data])
