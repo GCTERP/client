@@ -4,7 +4,7 @@
  */
 const Table = ({ data }) => {
 
-    const fields = data ? Object.keys(data[0]) : []
+    const fields = data && data[0] ? Object.keys(data[0]) : [];
 
     return (
         data &&
@@ -22,7 +22,7 @@ const Table = ({ data }) => {
                     </thead>
                     <tbody className="divide-y divide-gray-200">
                         {
-                            data.map((row, index) => (
+                            data.map((row, index) => ( 
                             <tr className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap hover:bg-sky-50" key={index}>
                                 {
                                     fields.map((key, index) => (

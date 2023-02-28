@@ -29,7 +29,7 @@ const Calendar = ({ selectDate }) => {
     return (
         <div className="w-fit">
             <div className="flex items-center">
-                <h2 className="flex-auto font-semibold text-gray-900 pl-1">{ format(firstDayCurrentMonth, 'MMMM yyyy') }</h2>
+                <h6 className="flex-auto font-semibold text-sm text-gray-500 pl-1">{ format(firstDayCurrentMonth, 'MMMM yyyy') }</h6>
                 <button type="button" onClick={() => previousMonth()} className="-my-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500">
                     <Icon name="chevron_left"/>
                 </button>
