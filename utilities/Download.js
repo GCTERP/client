@@ -21,9 +21,7 @@ const Download  = ({ url, ids, name = "data" }) => {
 
         if(!closed)
             axios.get(url, { params: { ids }, responseType: "blob" })
-                .then(response => {
-                    setBlob(response.data)
-                }).catch(err => console.log(err.message))
+                .then(response => setBlob(response.data)).catch(err => console.log(err.message))
 
     }, [ closed ])
 
@@ -38,7 +36,7 @@ const Download  = ({ url, ids, name = "data" }) => {
                 <div className="absolute text-slate-400 hover:text-red-500 top-2 right-2" onClick={() => setClosed(true)}>
                     <Icon name="close"/>
                 </div>
-                <a href={URL.createObjectURL(blob)} download={name + '.xlsx'} className="block text-center cursor-pointer hover:text-blue-500 text-sm pt-5">
+                <a onClick={() => setClosed(true)} href={URL.createObjectURL(blob)} download={name + '.xlsx'} className="block text-center cursor-pointer hover:text-blue-500 text-sm pt-5">
                     <div className="m-auto w-fit mb-3">
                         <Image src={download} width="50" height="50" alt="File Image"/>
                     </div>

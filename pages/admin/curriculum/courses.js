@@ -66,7 +66,7 @@ const Courses = () => {
                 <Download ids={data.filter(doc => filterCheck(doc)).map(doc => doc._id)} name="curriculum"/>
             </div>
         </div><br/>
-        <Table editable data={data.filter(doc => filterCheck(doc))} update={setEditedDoc} omit={omit}/><br/>
+        <Table editable data={data.filter(doc => filterCheck(doc))} update={setEditedDoc} omit={omit} indexed/><br/>
         </> : <div>Loading</div>
     )
 }
