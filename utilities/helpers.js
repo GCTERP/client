@@ -11,3 +11,15 @@ export const numberToRoman = (num) => {
         
     return Array(+digits.join("") + 1).join("M") + roman;
 }
+
+export const setSize = (value) => {
+    
+    let len = 0;
+    
+    if (typeof value == typeof '') 
+        len = value.length > 0 ? value.length : 1
+    else 
+        len = value.toString().length > 0 ? value.toString().length : 1;
+    
+        return len.toString();
+}

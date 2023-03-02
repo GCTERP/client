@@ -1,0 +1,72 @@
+{
+    "branches": {
+        "CIVIL": "Civil Engineering",
+        "MECH": "Mechanical Engineering",
+        "PROD": "Production Engineering",
+        "ECE": "Electronics and Communication Engineering",
+        "EEE": "Electrical and Electronics Engineering",
+        "EIE": "Electronics and Instrumentation Engineering",
+        "CSE": "Computer Science Engineering",
+        "IT": "Information Technology",
+        "IBT": "Industrial Biotechnology"
+    },
+    "metadata": {
+        "sem": 1,
+        "batch": "",
+        "regulation": "",
+        "begin": "",
+        "end": "",
+        "ut": {
+            "count": "",
+            "duration": "",
+            "marks": "",
+            "retestCount": "",
+            "contribution": ""
+        },
+        "assignment": {
+            "marks": "",
+            "count": "",
+            "contribution": ""
+        },
+        "tutorial": {
+            "marks": "",
+            "count": "",
+            "contribution": ""
+        },
+        "schedule": {
+            "opened": false,
+            "periodCount": "",
+            "periodDuration": "",
+            "isDayOrder": false,
+            "workingDaysPerWeek": ""
+        },
+        "freeze": {
+            "internal": "",
+            "attendance": ""
+        },
+        "deadline": {
+            "internal": "",
+            "attendance": ""
+        },
+        "valueAddedCourse": [],
+        "facultyAdvisor": [],
+        "condonation": "",
+        "feedback": {
+            "status": false,
+            "start": "",
+            "end": ""
+        },
+        "enrollment": {
+            "status": false,
+            "start": "",
+            "end": ""
+        },
+        "courseRegistration": {
+            "status": false,
+            "start": "",
+            "end": ""
+        },
+        "addOnEligible": [],
+        "downloadHallticket": false
+    }
+}

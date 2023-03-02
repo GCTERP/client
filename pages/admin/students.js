@@ -12,7 +12,7 @@ const Students = () => {
     let omit = [ "_id", "father", "mother", "guardian", "sslc", "hsc", "diploma", "undergraduate", "isCredentialCreated", "isActive", "permanentAddress", "temporaryAddress" ]
     const omitFields = (field) => !omit.some(item => item == field)
 
-    const [ batch, setBatch ] = useState(2019)
+    const [ batch, setBatch ] = useState(2018)
     const [ branch, setBranch ] = useState("ALL")
     const [ type, setType ] = useState("ALL")
     
@@ -56,7 +56,7 @@ const Students = () => {
     return ( data ? <>
         <div className="mr-2 flex justify-between">
             <div className="flex space-x-6">
-                <Dropdown name="Batch" update={setBatch} data={[ 2019, 2020, 2021, 2022 ]}/>
+                <Dropdown name="Batch" update={setBatch} data={[ 2018, 2019, 2020, 2021, 2022 ]}/>
                 <Dropdown name="Branch" update={setBranch} data={[ "ALL", "CIVIL", "MECH", "ECE", "EEE", "EIE", "CSE", "IT", "IBT" ]} />
                 <Dropdown name="Type" update={setType} data={[ "ALL", "regular", "lateral", "transfer" ]}/> 
             </div>
