@@ -3,107 +3,27 @@ import { useState } from "react";
 import Icon from "../../../utilities/Icon";
 import Upload from "../../../utilities/Upload";
 import Download from "../../../utilities/Download";
+import { useEffect } from "react";
+import axios from "axios";
+import Search from "../../../utilities/Search";
 
 const Branch = [ "ALL", "CIVIL", "MECH", "ECE", "EEE", "EIE", "CSE", "IT", "IBT" ];
-const EmploymentType = ["ALL", "Full-Time", "Part-Time"];
 
-const FacutlyForm = ({ setOpen }) => {
-
-    const [branch, setBranch] = useState("");
-    const [batch, setBatch] = useState("");
-    const [register, setRegister] = useState("");
-    const [email, setEmail] = useState("");
-    const [submit, setSubmit] = useState(false);
-
-    return (
-        <div className="absolute w-fit bg-white rounded-lg shadow-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-        <div
-            className="absolute text-slate-400 hover:text-red-500 top-4 right-2"
-            onClick={() => setOpen(false)}
-        >
-            <Icon name="close" />
-        </div>
-        <div className="text-xl font-bold w-fit m-auto my-4">
-            Add Facutly 
-        </div>
-        <hr />
-        <div className="flex space-x-4 justify-center w-fit m-4">
-            <Input
-            name="Reg. No."
-            type="text"
-            color="blue"
-            value={register}
-            update={setRegister}
-            />
-            <Input
-            name="Branch"
-            type="number"
-            color="blue"
-            value={branch}
-            update={setBranch}
-            />
-        </div>
-        <div className="flex space-x-4 justify-center w-fit m-4">
-            <Input
-            name="Batch"
-            type="number"
-            color="blue"
-            value={batch}
-            update={setBatch}
-            />
-            <Input
-            name="Email"
-            type="email"
-            color="blue"
-            value={email}
-            update={setEmail}
-            />
-        </div>
-        
-        <hr />
-        <div
-            onClick={() => setSubmit(true)}
-            className={`py-2 px-2 rounded-md cursor-pointer font-semibold text-sm m-4 text-center items-center text-white ${
-            submit ? "bg-slate-400" : "bg-blue-500"
-            }`}
-            disabled={submit ? "disabled" : ""}
-        >
-            Submit
-        </div>
-        </div>
-    );
-    };
-
-
-const Roles = () => {
-
-    const [file, setFile] = useState(null);
-
-    function handleClick(e) {
-        for (let id in data) {
-        if (data[id]._id === e._id) {
-            data[id] = e;
-        }
-        }
-    }
-
-    const CustomTable = ({ data, editable, update, omit = ["_id"] }) => {
-        const omitFields = (field) => !omit.some((item) => item == field);
-
-        const fields =
-        data && data.length > 0
-            ? Object.keys(data[0]).filter((key) => omitFields(key))
-            : [];
-
+const CustomTable = ({ data, editable, update, omit  }) => {
         const [edit, setEdit] = useState(data.map((item) => 0));
         const [values, setValues] = useState({});
-        const [checked, setChecked] = useState({});
+
+        const omitFields = (field) => !omit.some((item) => item == field);
+
+        const fields = data && data.length > 0
+        ? Object.keys(data[0]).filter((key) => omitFields(key))
+        : [];
+
 
         const mutate = (index, state, reset = true) => {
         for (let idx = 0; idx < edit.length; idx++) edit[idx] = reset ? 0 : 2;
         edit[index] = state;
         if (state == 1) setValues({ ...data[index] });
-        if (state == 1) setChecked({ ...data[index] });
         setEdit([...edit]);
         };
 
@@ -145,10 +65,13 @@ const Roles = () => {
         };
 
         return (
+            
         data &&
         (data.length > 0 ? (
-            <div className="max-h-[80%] overflow-auto overscroll-none mr-2 rounded-lg  ">
-            <table className="table-auto divide-y divide-gray-200 text-sm border rounded-tr-lg shadow-md rounded-t-lg rounded-b-lg text-left">
+            
+            <div className="max-w-min max-h-[80%] overflow-auto overscroll-none mr-2 rounded-b-lg shadow-md align-middle border rounded-t-lg ">
+            
+            <table className="table-auto divide-y divide-gray-200 text-sm text-left">
                 <thead className="bg-gray-100 text-xs uppercase">
                 <tr>
                     <th className="px-5 py-3 text-gray-600 text-left text-xs font-semibold first:rounded-tl-lg uppercase">
@@ -184,36 +107,25 @@ const Roles = () => {
                             className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap"
                             key={kidx}
                         >
-                            {typeof row[key] == typeof ""
-                            ? row[key].charAt(0).toUpperCase() + row[key].slice(1)
-                            : row[key]}
+                            {row[key]===true?<span class="material-symbols-outlined">done</span>:row[key]}
                         </td>
                         ) : (
                         <td
                             className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap"
                             key={kidx}
                         >
-                            {key != "Faculty ID" && key != "Name" ? (
+                            {(key!="fullName" && key!="branch" && key!="facultyId") ? (
                             <input
                                 type="checkbox"
                                 name={key}
-                                value={checked[key]}
+                                value={values[key]}
                                 checked={values[key]}
-                                size={setSize(checked[key])}
+                                size={setSize(values[key])}
                                 onClick={(e) => {
-                                checked[key] === ""
-                                    ? (values[key] = (
-                                        <span class="material-symbols-outlined">
-                                        done
-                                        </span>
-                                    ))
-                                    : (values[key] = "");
-
-                                setChecked({ ...checked });
+                                values[key] = !values[key];
                                 setValues({ ...values });
-                                checked[key] != ""
-                                    ? (checked[key] = "")
-                                    : checked[key];
+                                
+                                
                                 }}
                                 className="group-hover:bg-sky-50 outline-none"
                             />
@@ -246,107 +158,72 @@ const Roles = () => {
     };
 
 
-    function handleBranch(e) {
-        setData(data.filter((data) => data.Department === e));
-    }
+const Roles = () => {
+    const [data,setData]=useState(null);
+    const [file, setFile] = useState(null);
+    const [editedDoc,setEditedDoc] = useState({});
+    const [filter, setFilter ] = useState("")
+    const [search,setSearch]=useState("");
+    const [fields,setFields]=useState(null);
+    const [branch,setBranch]=useState("ALL");
+    const omit = ["_id","email","personalEmail","type","firstName","lastName","mobile","primaryRole","title","isCredentialCreated","isActive"];
+    const omitFields = (field) => !omit.some(item => item == field)
 
-    function handleType(e) {
-        setData(data.filter((data) => data["Employment Type"] === e));
-    }
+    
+    useEffect(() => {
+        if(JSON.stringify(editedDoc) != "{}")
+            for(let idx in data)
+                if(data[idx]._id == editedDoc._id) {
+                    axios.put("http://192.168.25.175:5000/admin/faculty/update", editedDoc)
+                        .then(response => {
+                            data[idx] = {...editedDoc}
+                            setData([...data])
+                        }).catch(err => console.log(err.message))
+                }
+    }, [ editedDoc ])
 
-    const [data, setData] = useState([
-    {
-        _id: 1,
-        "Faculty ID": "191918",
-        Name: "Naren Kumar",
-        HOD: <span class="material-symbols-outlined">done</span>,
-        PC: "",
-        TTC: "",
-        CFA: "",
-        FA: "",
-        CI: <span class="material-symbols-outlined ">done</span>,
-        
-        },
-        {
-        _id: 2,
-        "Faculty ID": "191812",
-        Name: "Naren Kumar",
-        HOD: <span class="material-symbols-outlined  ">done</span>,
-        PC: "",
-        TTC: "",
-        CFA: "",
-        FA: "",
-        CI: <span class="material-symbols-outlined">done</span>,
-        
-        },
-        {
-        _id: 3,
-        "Faculty ID": "191812",
-        Name: "Naren Kumar",
-        HOD: "",
-        PC: "",
-        TTC: "",
-        CFA: "",
-        FA: "",
-        CI: <span class="material-symbols-outlined">done</span>,
-        },
-        {
-        _id: 4,
-        "Faculty ID": "191812",
-        Name: "Naren Kumar",
-        HOD: <span class="material-symbols-outlined">done</span>,
-        PC: "",
-        TTC: "",
-        CFA: "",
-        FA: "",
-        CI: "",
-        },
-        {
-        _id: 5,
-        "Faculty ID": "191812",
-        Name: "Naren Kumar",
-        HOD: "",
-        PC: "",
-        TTC: <span class="material-symbols-outlined">done</span>,
-        CFA: "",
-        FA: <span class="material-symbols-outlined">done</span>,
-        CI: "",
-        },
-        {
-        _id: 6,
-        "Faculty ID": "191812",
-        Name: "Naren Kumar",
-        HOD: <span class="material-symbols-outlined">done</span>,
-        PC: <span class="material-symbols-outlined">done</span>,
-        TTC: "",
-        CFA: "",
-        FA: "",
-        CI: <span class="material-symbols-outlined">done</span>,
-        },
-            ]);
+    const filterSearch = (doc) => doc[filter.charAt(0).toLowerCase() + filter.slice(1)].toString().toLowerCase().includes(search.toString().toLowerCase())
+
+    const filterCheck = (doc) => (branch == "ALL" ? true : doc.branch == branch) && filterSearch(doc)
+
+
+    useEffect(() => {
+        axios
+          .get("http://192.168.25.175:5000/admin/faculty")
+          .then((response) => {
+            let data = response.data;
+            var fields = Object.keys(data[0]).filter(key => omitFields(key))
+                setFilter(fields[0])
+                setFields(fields)
+            setData(data);
+          })
+          .catch((err) => console.log(err.message));
+    }, [])
+
+
+
+
+    
+
     return (
+        
+        data && (
         <>
+        
         <div className="flex p-4  space-x-12">
-            <div className="">
+            <div className="flex  justify-center  items-center">
             <Dropdown
                 name="Branch"
                 data={Branch}
-                update={handleBranch}
+                update={setBranch}
                 special={false}
             ></Dropdown>
-            </div>
-            <div className>
-            <Dropdown
-                name="Employment Type"
-                data={EmploymentType}
-                update={handleType}
-                special={false}
-            ></Dropdown>
+            <div className="ml-80">
+            <Search  options={fields} filter={filter} setFilter={setFilter} search={search} update={setSearch}/>
+</div>
             </div>
         </div>
-        <div className="relative pl-4 pt-3">
-            <CustomTable editable data={data} update={handleClick}></CustomTable>
-        </div>
+            <CustomTable editable data={data.filter(doc => filterCheck(doc))} update={setEditedDoc}  omit={omit} ></CustomTable>            
         <div className="m-4 flex ">
             <Upload file={file} setFile={setFile} />
             <Download
@@ -355,7 +232,9 @@ const Roles = () => {
             }
             ></Download>
         </div>
-        </>
+        </>)
+        
+        
     );
 };
 
