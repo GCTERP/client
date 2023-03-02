@@ -5,13 +5,14 @@ import Button from "../../../utilities/Button"
 import Table from "../../../utilities/Table"
 import Input from "../../../utilities/Input"
 import Icon from "../../../utilities/Icon"
-
+import Dropdown from "../../../utilities/Dropdown"
 const BranchForm = ({ setOpen }) => {
 
     const [ branch, setBranch ] = useState("")
     const [ launch, setLaunch ] = useState("Today")
     const [ code, setCode ] = useState("")
     const [ name, setName ] = useState("")
+    const [ programme, setProgramme] = useState("B.E")
     const [ cap, setCap ] = useState("")
     const [ key, setKey ] = useState("")
     const [ submit, setSubmit ] = useState(false)
@@ -19,8 +20,9 @@ const BranchForm = ({ setOpen }) => {
     useEffect(() => {
 
         if(submit) {
-            let data = { branch, launchDate: launch, code, name, key, capacity: cap }
-            axios.post(process.env.NEXT_PUBLIC_URL + '/admin/branch/manage', data)
+            let data = { branch, launchDate: launch, code, name, key, capacity: cap, programme: programme }
+            console.log(data);
+            axios.post( 'http://192.162.45.175/admin/branch/manage', data)
                 .then(response => { setSubmit(false); setOpen(false) })
                 .catch(err => console.log(err.message))
         }
@@ -33,6 +35,11 @@ const BranchForm = ({ setOpen }) => {
                 <Icon name="close"/>
             </div>
             <div className="text-xl font-bold w-fit m-auto my-4">Create New Branch</div><hr/>
+            <div className="flex space-x-4 justify-center w-fit m-4" >
+                <Dropdown data={["B.E","B.Tech"]} name="Programme" update={setProgramme}></Dropdown> 
+                            
+            </div>
+
             <div className="flex space-x-4 justify-center w-fit m-4">
                 <Input name="Branch" type="text" color="blue" value={branch} update={setBranch}/>
                 <Input name="Code" type="number" color="blue" value={code} update={setCode}/>
@@ -58,8 +65,9 @@ const Branches = () => {
 
     useEffect(() => {
 
-        axios.get(process.env.NEXT_PUBLIC_URL + '/admin/branch')
+        axios.get('http://192.168.45.175:5000/admin/branch')
             .then(response => {
+
                 let data = response.data
                 for(let idx in data)
                     data[idx].launchDate = data[idx].launchDate.split('T')[0]
@@ -73,10 +81,11 @@ const Branches = () => {
         if(JSON.stringify(editedDoc) != "{}")
             for(let idx in data)
                 if(data[idx]._id == editedDoc._id) {
-                    axios.post(process.env.NEXT_PUBLIC_URL + '/admin/branch/manage', editedDoc)
+                    axios.post('192.168.45.175:5000/admin/branch/manage', editedDoc)
                         .then(response => {
                             data[idx] = {...editedDoc}
                             setData([...data])
+                            console.log(data[idx])
                         }).catch(err => console.log(err.message))
                 }
     }, [ editedDoc ])
