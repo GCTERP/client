@@ -6,8 +6,146 @@ import Dropdown from "../../../utilities/Dropdown"
 import Upload from "../../../utilities/Upload"
 import Search from "../../../utilities/Search"
 import Table from "../../../utilities/Table"
+import Button from "../../../utilities/Button"
+import Icon from "../../../utilities/Icon"
+import Input from "../../../utilities/Input"
+import MultiSelect from "../../../utilities/MultiSelect"
+
+const FacultyForm = ({ setOpen }) => {
+  const [branch, setBranch] = useState("Civil");
+  const [email, setEmail] = useState(null);
+  const [FacultyId, setFacultyId] = useState(null);
+  const [fName, setFName] = useState(null);
+  const [lName, setLName] = useState(null);
+  const [mobile, setMobile] = useState(null);
+  const [title,setTitle] = useState("Dr.");
+  const [primaryRole,setPrimaryRole] = useState("fa");
+  const [type,setType]= useState("adhoc");
+  const [roles,setRoles]=useState([]);
+  const [submit, setSubmit] = useState(false);
+  
+  
+
+  useEffect(() => {
+    
+    if (submit  && email && FacultyId && fName && lName && mobile ) {
+      let data = {
+          admin: false,
+          branch:  branch,
+          cfa: false,
+          ci: false,
+          email: email,
+          fa: false,
+          facultyId: FacultyId,
+          firstName: fName,
+          hod: false,
+          isActive: true,
+          isCredentialCreated: false,
+          lastName: lName,
+          mobile: mobile,
+          pc: false,
+          personalEmail: "rjmmalavika@gmail.com",
+          primaryRole: primaryRole,
+          title: title,
+          ttc: false,
+          type: type
+      };
+      axios
+        .post("http://192.168.204.175:5000/admin/faculty/add", data)
+        .then((response) => {
+          setSubmit(false);
+          setOpen(false);
+        })
+        .catch((err) => console.log(err.message));
+    }
+    console.log(roles);
+  }, [submit]);
+
+  return (
+    <div className="absolute w-fit bg-white rounded-lg shadow-lg top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+      <div
+        className="absolute cursor-pointer text-red-500 top-4 right-2"
+        onClick={() => setOpen(false)}
+      >
+        <Icon name="close" />
+      </div>
+      
+      <div className="text-xl font-bold w-fit m-auto my-4">
+        Add New Faculty
+      </div>
+      <hr />
+      <div className="flex space-x-4 justify-center w-fit m-4">
+      <Dropdown data={["Dr.","Mr.","Mrs."]} update={setTitle}></Dropdown>
+      <Input
+          name="First Name"
+          type="text"
+          color="blue"
+          value={fName}
+          update={setFName}
+        />
+        <Input
+          name="Last Name"
+          type="text"
+          color="blue"
+          value={lName}
+          update={setLName}
+        />
+        </div>
+      <div className=" space-x-4 justify-center w-full m-4">
+        <MultiSelect name="Roles" data={["admin", "cfa", "hod", "pc", "ttc", "fa", "ci"]} selectedData={setRoles} ></MultiSelect>
+      </div>
+      <div className="flex space-x-4 justify-center w-fit m-4">
+        <Dropdown  update={setBranch} name="Branch" data={ ["CIVIL", "MECH", "ECE", "EEE", "EIE", "CSE", "IT", "IBT"] }></Dropdown>
+        <Dropdown  update={setPrimaryRole} name="Primary Role" data={["admin", "cfa", "hod", "pc", "ttc", "fa", "ci"]} ></Dropdown>
+        <Dropdown  name={"Type"} data={["Adhoc","COE","External","Internal"]} update={setType}></Dropdown>
+      
+      </div>
+      
+      <div className="flex space-x-4 justify-center w-fit m-4">
+      <Input
+          name="Faculty ID"
+          type="number"
+
+          color="blue"
+          value={FacultyId}
+          update={setFacultyId}
+        />        
+      </div>
+      
+      <div className="flex space-x-4 justify-center w-fit m-4">
+<Input
+          name="Email"
+          type="email"
+          color="blue"
+          value={email}
+          update={setEmail}
+        />
+<Input
+          name="Mobile"
+          type="text"
+          color="blue"
+          value={mobile}
+          update={setMobile}
+        />
+        
+      </div>
+      <hr />
+      <div
+        onClick={() => setSubmit(true)}
+        className={`py-2 px-2 rounded-md cursor-pointer font-semibold text-sm m-4 text-center items-center text-white ${
+          submit ? "bg-slate-400" : "bg-blue-500"
+        }`}
+        disabled={submit ? "disabled" : ""}
+      >
+        + Add
+      </div>
+    </div>
+  );
+};
+
 
 const Details = () => {
+    const [open, setOpen] = useState(false);
 
     let omit = [ "_id", "admin", "cfa", "hod", "pc", "ttc", "fa", "ci" ]
     const omitFields = (field) => !omit.some(item => item == field)
@@ -22,18 +160,20 @@ const Details = () => {
     const [ editedDoc, setEditedDoc ] = useState({})
 
     useEffect(() => {
+        axios
+          .get("http://192.168.204.175:5000/admin/faculty")
+          .then((response) => {
+            let data = response.data,
+              fields = [];
+            fields = Object.keys(data[0]).filter((key) => omitFields(key));
+            setFilter(fields[0]);
+            setFields(fields);
+            setData(data);
+            console.log(data)
+          })
+          .catch((err) => console.log(err.message));
 
-        axios.get(process.env.NEXT_PUBLIC_URL + '/admin/faculty')
-            .then(response => {
-                let data = response.data, fields = []    
-                fields = Object.keys(data[0]).filter(key => omitFields(key))
-                setFilter(fields[0])
-                setFields(fields)
-                setData(data)
-            })
-            .catch(err => console.log(err.message))
-
-    }, [])
+    }, [open])
 
     useEffect(() => {
         if(JSON.stringify(editedDoc) != "{}")
@@ -63,7 +203,11 @@ const Details = () => {
             </div>
         </div><br/>
         <Table editable data={data.filter(doc => filterCheck(doc))} update={setEditedDoc} omit={omit} indexed/><br/>
+        <Button name="Add Faculty" icon="add" color="blue" event={() => setOpen(true)}/>
+        { open && <FacultyForm setOpen={setOpen}/> }
+        
         </> : <div>Loading</div>
+        
     )
 }
  
