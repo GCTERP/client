@@ -12,7 +12,7 @@ const Students = () => {
     let omit = [ "_id", "father", "mother", "guardian", "sslc", "hsc", "diploma", "undergraduate", "isCredentialCreated", "isActive", "permanentAddress", "temporaryAddress" ]
     const omitFields = (field) => !omit.some(item => item == field)
 
-    const [ batch, setBatch ] = useState(2019)
+    const [ batch, setBatch ] = useState(2018)
     const [ branch, setBranch ] = useState("ALL")
     const [ type, setType ] = useState("ALL")
     
@@ -56,17 +56,17 @@ const Students = () => {
     return ( data ? <>
         <div className="mr-2 flex justify-between">
             <div className="flex space-x-6">
-                <Dropdown name="Batch" update={setBatch} data={[ 2019, 2020, 2021, 2022 ]}/>
+                <Dropdown name="Batch" update={setBatch} data={[ 2018, 2019, 2020, 2021, 2022 ]}/>
                 <Dropdown name="Branch" update={setBranch} data={[ "ALL", "CIVIL", "MECH", "ECE", "EEE", "EIE", "CSE", "IT", "IBT" ]} />
                 <Dropdown name="Type" update={setType} data={[ "ALL", "regular", "lateral", "transfer" ]}/> 
             </div>
             <Search options={fields} filter={filter} setFilter={setFilter} search={search} update={setSearch}/>
             <div className="flex mt-2 space-x-2">
                 <Upload url={process.env.NEXT_PUBLIC_URL + '/admin/students/upload'}/>
-                <Download url={process.env.NEXT_PUBLIC_URL + '/admin/download/students'} ids={data.filter(doc => filterCheck(doc)).map(doc => doc._id)} name="students"/>
+                <Download url={process.env.NEXT_PUBLIC_URL + '/admin/students/download'} ids={data.filter(doc => filterCheck(doc)).map(doc => doc._id)} name="students"/>
             </div>
         </div><br/>
-        <Table editable data={data.filter(doc => filterCheck(doc))} update={setEditedDoc} omit={omit}/><br/>
+        <Table editable data={data.filter(doc => filterCheck(doc))} update={setEditedDoc} omit={omit} indexed/><br/>
         </> : <div>Loading</div>
     )
 }

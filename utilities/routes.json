@@ -58,6 +58,11 @@
                     "key": 2,
                     "route": "branches",
                     "name": "Branches"
+                },
+                {
+                    "key": 3,
+                    "route": "fa",
+                    "name": "FA"
                 }
             ]
         },
