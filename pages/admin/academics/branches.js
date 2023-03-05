@@ -19,8 +19,8 @@ const BranchForm = ({ setOpen }) => {
     useEffect(() => {
 
         if(submit) {
-            let data = { branch, launchDate: launch, code, name, key, capacity: cap }
             axios.post(process.env.NEXT_PUBLIC_URL + '/admin/branch/manage', data)
+            let data = { branch, launchDate: launch, code, name, key, capacity: cap }
                 .then(response => { setSubmit(false); setOpen(false) })
                 .catch(err => console.log(err.message))
         }
