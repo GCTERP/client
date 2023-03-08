@@ -21,8 +21,7 @@ const Upload = ({ url }) => {
     useEffect(() => {
 
         if(trigger)
-            // axios.post('http://192.168.110.175:5000/admin/upload/students', { students: file }, {
-            axios.post(url, { students: file }, {
+            axios.post(url, { data: file }, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

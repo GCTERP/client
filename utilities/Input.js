@@ -11,7 +11,7 @@
  * @param required @type Boolean
  * @param disabled @type Boolean
  */
- const Input = ({ name, type, color = "stone", value, update, size, min, max, required, disabled }) => {
+const Input = ({ name, type, color = "stone", value, update, size, min, max, required, disabled }) => {
     return ( 
         <div className={`relative group ${size}`}>
             <label htmlFor={name.toLowerCase()} className={`absolute ease-in duration-150 px-1 left-2 group-focus-within:text-${color}-500 group-focus-within:font-bold group-focus-within:-top-2 top-2 group-focus-within:text-xs group-focus-within:bg-white text-sm ${value != "" && "-top-2 text-xs bg-white"}`}>{name}</label>
