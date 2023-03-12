@@ -28,7 +28,8 @@ const Courses = () => {
         axios.get(process.env.NEXT_PUBLIC_URL + '/admin/curriculum', { params: { regulation } })
             .then(response => {
                 let data = response.data, fields = []
-                fields = Object.keys(data[0]).filter(key => omitFields(key))
+                if(data.length > 0)
+                    fields = Object.keys(data[0]).filter(key => omitFields(key))
                 setFilter(fields[0])
                 setFields(fields)
                 setData(data)
@@ -56,11 +57,11 @@ const Courses = () => {
     return ( data ? <>
         <div className="mr-2 flex justify-between">
             <div className="flex space-x-6">
-                <Dropdown name="Batch" update={setRegulation} data={[ 2018, 2019, 2014, 2010 ]}/>
+                <Dropdown name="Regulation" update={setRegulation} data={[ 2018, 2019, 2014, 2010 ]}/>
                 <Dropdown name="Branch" update={setBranch} data={[ "ALL", "CIVIL", "MECH", "ECE", "EEE", "EIE", "CSE", "IT", "IBT" ]}/>
                 <Dropdown name="Type" update={setType} data={[ "ALL", "theory", "practical" ]}/> 
             </div>
-            <Search options={fields} filter={filter} setFilter={setFilter} search={search} update={setSearch}/>
+            { data.length > 0 && <Search options={fields} filter={filter} setFilter={setFilter} search={search} update={setSearch}/>}
             <div className="flex mt-2 space-x-2">
                 <Upload url={process.env.NEXT_PUBLIC_URL + '/admin/curriculum/upload'}/>
                 <Download ids={data.filter(doc => filterCheck(doc)).map(doc => doc._id)} name="curriculum"/>

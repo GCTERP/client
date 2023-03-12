@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 
 import Dropdown from "../../utilities/Dropdown"
-import Table from "../../utilities/Table"
 import Button from "../../utilities/Button"
 import Input from "../../utilities/Input"
 
@@ -90,8 +89,14 @@ const UT = () => {
         (courses && semester) ? 
         <>
             <div className="mr-2 flex space-x-4">
-                <Dropdown name="Batch" update={setBatch} data={[ "ALL", ...semester.map(doc => doc.batch) ]}/>
-                <Dropdown name="UT Number" update={setUt} data={ [ "ALL", ...new Set([...data.map(doc => doc.number)])] }/>
+                {batch=="ALL"?
+                    <Dropdown name="Batch" update={setBatch} data={ [ batch, ...semester.filter(doc=>doc.batch!=batch).map(doc => doc.batch) ]}/>:
+                    <Dropdown name="Batch" update={setBatch} data={ [ batch, "ALL", ...semester.filter(doc=>doc.batch!=batch).map(doc => doc.batch) ]}/>
+                }
+                {ut=="ALL"?
+                    <Dropdown name="UT Number" update={setUt} data={ [ ut, ...new Set([...data.filter(doc=> doc.number!=ut).map(doc => doc.number)])] }/>:
+                    <Dropdown name="UT Number" update={setUt} data={ [ ut, "ALL", ...new Set([...data.filter(doc=>doc.number!=ut).map(doc => doc.number)])] }/>
+                }
             </div><br/><div></div>
             <div className="max-w-min max-h-[75%] overflow-auto overscroll-none mr-2 rounded-b-lg shadow-md align-middle border rounded-t-lg">
                 <table className="table-auto divide-y divide-gray-200 text-sm text-left">
@@ -129,7 +134,7 @@ const UT = () => {
                                     <Dropdown 
                                         update = {(val) => 
                                             {
-                                                let temp = data
+                                                let temp = data.map(item => ({...item}))
                                                 for(let value of temp) {
                                                     if(value.number==row.number&&value.courseCode == row.courseCode){
                                                         console.log("updating..")
@@ -137,7 +142,7 @@ const UT = () => {
                                                     }
                                                     setData(temp)
                                                 }    
-                                                setCourses(data.filter(doc => (batch=='ALL' ? true : doc.batch == batch) && (ut == 'ALL' ? true : doc.number == ut )))
+                                                setCourses(temp.filter(doc => (batch=='ALL' ? true : doc.batch == batch) && (ut == 'ALL' ? true : doc.number == ut )))
                                             }
                                         }
                                         data = { courses[ridx].session =="AN" ?["AN", "FN"]:["FN", "AN"] }
