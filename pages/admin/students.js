@@ -9,7 +9,7 @@ import Table from "../../utilities/Table"
 
 const Students = () => {
 
-    let omit = [ "_id", "father", "mother", "guardian", "sslc", "hsc", "diploma", "undergraduate", "isCredentialCreated", "isActive", "permanentAddress", "temporaryAddress" ]
+    let omit = [ "_id", "father", "mother", "guardian", "sslc", "hsc", "diploma", "personalEmail", "undergraduate", "isCredentialCreated", "permanentAddress", "temporaryAddress" ]
     const omitFields = (field) => !omit.some(item => item == field)
 
     const [ batch, setBatch ] = useState(2018)
@@ -27,8 +27,9 @@ const Students = () => {
 
         axios.get(process.env.NEXT_PUBLIC_URL + '/admin/students', { params: { batch } })
             .then(response => {
-                let data = response.data, fields = []    
-                fields = Object.keys(data[0]).filter(key => omitFields(key))
+                let data = response.data, fields = []
+                if(data.length > 0)
+                    fields = Object.keys(data[0]).filter(key => omitFields(key))
                 setFilter(fields[0])
                 setFields(fields)
                 setData(data)
@@ -60,7 +61,7 @@ const Students = () => {
                 <Dropdown name="Branch" update={setBranch} data={[ "ALL", "CIVIL", "MECH", "ECE", "EEE", "EIE", "CSE", "IT", "IBT" ]} />
                 <Dropdown name="Type" update={setType} data={[ "ALL", "regular", "lateral", "transfer" ]}/> 
             </div>
-            <Search options={fields} filter={filter} setFilter={setFilter} search={search} update={setSearch}/>
+            { data.length > 0 && <Search options={fields} filter={filter} setFilter={setFilter} search={search} update={setSearch}/> }
             <div className="flex mt-2 space-x-2">
                 <Upload url={process.env.NEXT_PUBLIC_URL + '/admin/students/upload'}/>
                 <Download url={process.env.NEXT_PUBLIC_URL + '/admin/students/download'} ids={data.filter(doc => filterCheck(doc)).map(doc => doc._id)} name="students"/>
