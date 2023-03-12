@@ -96,8 +96,7 @@ const Details = () => {
     const [ data, setData ] = useState(null)
     const [ editedDoc, setEditedDoc ] = useState({})
 
-    useEffect(() => {
-        
+    useEffect(() => {   
         axios.get(process.env.NEXT_PUBLIC_URL + "/admin/faculty")
             .then((response) => {
                 let data = response.data, fields = [];
