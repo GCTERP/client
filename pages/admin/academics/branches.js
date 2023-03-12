@@ -64,7 +64,7 @@ const Branches = () => {
 
     useEffect(() => {
 
-        axios.get('http://192.168.45.175:5000/admin/branch')
+        axios.get(process.env.NEXT_PUBLIC_URL+'/admin/branch')
             .then(response => {
 
                 let data = response.data
@@ -80,7 +80,7 @@ const Branches = () => {
         if(JSON.stringify(editedDoc) != "{}")
             for(let idx in data)
                 if(data[idx]._id == editedDoc._id) {
-                    axios.post('192.168.45.175:5000/admin/branch/manage', editedDoc)
+                    axios.post(process.env.NEXT_PUBLIC_URL+'/admin/branch/manage', editedDoc)
                         .then(response => {
                             data[idx] = {...editedDoc}
                             setData([...data])

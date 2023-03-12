@@ -51,7 +51,7 @@ const FacultyForm = ({ setOpen }) => {
           type: type
       };
       axios
-        .post("http://192.168.204.175:5000/admin/faculty/add", data)
+        .post(process.env.NEXT_PUBLIC_URL +"/admin/faculty/add", data)
         .then((response) => {
           setSubmit(false);
           setOpen(false);
@@ -161,7 +161,7 @@ const Details = () => {
 
     useEffect(() => {
         axios
-          .get("http://192.168.204.175:5000/admin/faculty")
+          .get(process.env.NEXT_PUBLIC_URL +"/admin/faculty")
           .then((response) => {
             let data = response.data,
               fields = [];

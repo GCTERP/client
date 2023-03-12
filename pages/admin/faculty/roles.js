@@ -174,7 +174,7 @@ const Roles = () => {
         if(JSON.stringify(editedDoc) != "{}")
             for(let idx in data)
                 if(data[idx]._id == editedDoc._id) {
-                    axios.put("http://192.168.25.175:5000/admin/faculty/update", editedDoc)
+                    axios.put(process.env.NEXT_PUBLIC_URL +"/admin/faculty/update", editedDoc)
                         .then(response => {
                             data[idx] = {...editedDoc}
                             setData([...data])
@@ -189,7 +189,7 @@ const Roles = () => {
 
     useEffect(() => {
         axios
-          .get("http://192.168.25.175:5000/admin/faculty")
+          .get(process.env.NEXT_PUBLIC_URL +"/admin/faculty")
           .then((response) => {
             let data = response.data;
             var fields = Object.keys(data[0]).filter(key => omitFields(key))
@@ -200,10 +200,6 @@ const Roles = () => {
           .catch((err) => console.log(err.message));
     }, [])
 
-
-
-
-    
 
     return (
         
