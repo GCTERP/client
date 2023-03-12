@@ -66,8 +66,15 @@
                 }
             ]
         },
+        
         {
             "key": 5,
+            "route": "calendar",
+            "name": "Calendar",
+            "icon": "calendar_month"
+        },
+        {
+            "key": 6,
             "route": "curriculum",
             "name": "Curriculum",
             "icon": "library_books",
@@ -85,7 +92,7 @@
             ]
         },
         {
-            "key": 6,
+            "key": 7,
             "route": "enrollment",
             "name": "Enrollment",
             "icon": "view_list",
@@ -103,7 +110,7 @@
             ]
         },
         {
-            "key": 7,
+            "key": 8,
             "route": "reports",
             "name": "Reports",
             "icon": "monitoring",
@@ -121,7 +128,7 @@
             ]
         },
         {
-            "key": 8,
+            "key": 9,
             "route": "examination",
             "name": "Examination",
             "icon": "receipt_long",
@@ -144,7 +151,7 @@
             ]
         },
         {
-            "key": 9,
+            "key": 10,
             "route": "feedback",
             "name": "Feedback",
             "icon": "star",
@@ -162,7 +169,7 @@
             ]
         },
         {
-            "key": 10,
+            "key": 11,
             "route": "requests",
             "name": "Requests",
             "icon": "send",

@@ -22,7 +22,6 @@ const BranchForm = ({ setOpen }) => {
 
         if(submit) {
             let data = { branch, launchDate: launch, code, name, key, capacity: cap, programme: programme }
-            console.log(data);
             axios.post(process.env.NEXT_PUBLIC_URL + '/admin/branch/manage', data)
                 .then(response => { setSubmit(false); setOpen(false) })
                 .catch(err => console.log(err.message))
