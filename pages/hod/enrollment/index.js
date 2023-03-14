@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import Button from "../../../utilities/Button";
 import axios from "axios";
 import Icon from "../../../utilities/Icon";
 import Dropdown from "../../../utilities/Dropdown";
 
 const Enrollment = () => {
-  const data1 = [2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028];
-  const data2 = ["ECE", "CSE", "EEE", "CIVIL", "MECH", "EIE", "IT"];
-  const data3 = [1, 2, 3, 4, 5, 6, 7, 8];
+  const data1 = [2017,2018,2019,2020,2021, 2022, 2023, 2024];
+  const data2 = ["ALL","ECE", "CSE", "EEE", "IT", "CIVIL", "MECH", "EIE"];
+  const data3 = ["ALL",1, 2, 3, 4, 5, 6, 7, 8];
   const [batch, setBatch] = useState(0);
   const [branch, setBranch] = useState("");
   const [sem, setSem] = useState(0);
@@ -30,29 +29,44 @@ const Enrollment = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const router = useRouter();
   useEffect(() => {
-    setEnrolmentdata((prevState) => {
-      return {
-        ...prevState,
-        batch: batch,
-        sem: sem,
-        branch: branch,
-      };
-    });
+    var bran=branch;
+    var semes=sem;
+    if(branch==="ALL"){
+      bran=["ECE", "CSE", "IT", "EEE", "CIVIL", "MECH", "EIE"];
+    }
+    if(semes==="ALL"){
+      semes=[1,2,3,4,5,6,7,8];
+    }
+    
+      setEnrolmentdata((prevState) => {
+        return {
+          ...prevState,
+          batch: batch,
+          sem: semes,
+          branch: bran,
+        };
+      });
   }, [sem, branch, batch]);
-
+  const [loading, setLoading] = useState(false);
+  const [loading1, setLoading1] = useState(false);
   const saveEnrol = () => {
+    setLoading(true);
     const url = "http://localhost:5000/hod/enrolment";
     axios
       .post(url, enrolmentdata)
       .then((res) => {
+        console.log(res.data);
         setEnroledStudents({
           courseCode: res.data,
         });
         setSearch(true);
+        setLoading(false);
       })
 
       .catch((err) => {
         console.log("error");
+        setLoading1(false);
+        alert(err.response.data.message)
       });
   };
 
@@ -128,16 +142,27 @@ const Enrollment = () => {
   }, [approve]);
 
   const saveApprove = () => {
+    setLoading1(true);
     const url = "http://localhost:5000/hod/enrolment/approvestudents";
 
     axios
       .post(url, approve)
       .then((res) => {
         console.log(res.data);
+        if(res.data.success){
+            setLoading1(false);
+            alert("Approval done successfully!")
+          }
+          else{
+          setLoading1(false);
+          alert(res.data.message)
+          }
       })
 
       .catch((err) => {
         console.log("error");
+        setLoading1(false);
+        alert(err.response.data.message)
       });
   };
 
@@ -157,7 +182,7 @@ const Enrollment = () => {
         </div>
         &nbsp;&nbsp;&nbsp;
         <div className="justify-end mt-2">
-          <Button name={"Save"} color={"blue"} event={saveEnrol} />
+        <button className="flex w-fit py-2 px-2 rounded-md cursor-pointer font-semibold text-sm items-center bg-blue-500 text-white" onClick={saveEnrol}  disabled={loading}><div className="px-1">{loading ? "Loading..." : "Get Details"}</div></button>
         </div>
       </div>
       <br></br>
@@ -220,6 +245,7 @@ const Enrollment = () => {
                         <th className="text-center px-5 py-3 text-gray-600 text-left text-xs font-semibold uppercase tracking-wider" key={index}>{heading}</th>
                       ))}
                       <th className="text-center px-5 py-3 text-gray-600 text-left text-xs font-semibold uppercase tracking-wider"> Approval</th>
+                      <th className="text-center px-5 py-3 text-gray-600 text-left text-xs font-semibold uppercase tracking-wider"> Approval-Status</th>
                     </tr>
                   )}
                   <tbody className="divide-y divide-gray-200">
@@ -243,6 +269,12 @@ const Enrollment = () => {
                                   <input id="default-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" onChange={handleClick(studentListTable.courseCode,element)}/>
                                 )}
                               </td>
+                              <td className="text-center  px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
+                              {element.approval=== 1 &&  <div className="text-blue-500"><Icon name="check_circle" fill={false} /></div>}
+                              {element.approval=== 2 &&  <div className="text-blue-500"><Icon name="check_circle" fill={false} /></div>}
+                              {element.approval <= 0 && <div className="text-red-500"><Icon name="cancel" fill={false} /></div>}
+                              {element.approval>= 3 && <div className="text-green-500"><Icon name="check_circle" fill={false} /></div>}
+                              </td>
                             </tr>
                           </>
                         );
@@ -255,7 +287,7 @@ const Enrollment = () => {
         )}
         {search && (
           <div className="mt-2">
-            <Button name={"Approve"} color={"blue"} event={saveApprove} />
+            <button className="flex w-fit py-2 px-2 rounded-md cursor-pointer font-semibold text-sm items-center bg-blue-500 text-white" onClick={saveApprove}  disabled={loading1}><div className="px-1">{loading1 ? "Loading..." : "Approve"}</div></button>
           </div>
         )}
       </div>
