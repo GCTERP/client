@@ -20,7 +20,7 @@ const App = ({ Component, pageProps }) => {
     roles: ["admin", "hod", "pc", "ttc", "fa", "ci"],
   });
 
-  //const [ auth, setAuth ] = useState({ status: true, primaryRole: "student", roles: [ ] })
+  // const [ auth, setAuth ] = useState({ status: true, primaryRole: "student", roles: [ ] })
 
   const Auth = useMemo(() => ({ auth, setAuth }), [auth, setAuth]);
 

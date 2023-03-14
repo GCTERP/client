@@ -2,13 +2,12 @@ import Dropdown from "../../../utilities/Dropdown"
 import Table from "../../../utilities/Table"
 import Calendar from "../../../utilities/Calendar"
 import Button from "../../../utilities/Button"
-import masterTestData from "../../../test/masterTestData"
 import { useEffect, useState } from "react"
 import axios from "axios"
 
 const Master = () => {
 
-    const [tableData,setTableData]=useState(masterTestData)
+    const [tableData,setTableData]=useState([])
     const [tableView, setTableView] = useState(false)
 
     useEffect(() => {

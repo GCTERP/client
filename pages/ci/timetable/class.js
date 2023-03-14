@@ -1,7 +1,5 @@
 import Button from "../../../utilities/Button"
 import Table from "../../../utilities/Table"
-import masterTestData from "../../../test/masterTestData"
-import axios from "axios"
 import Input from "../../../utilities/Input"
 import { useEffect, useState } from "react"
 import Icon from "../../../utilities/Icon"

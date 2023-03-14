@@ -6,10 +6,11 @@ import Table from "../../../utilities/Table"
 import Input from "../../../utilities/Input"
 import Icon from "../../../utilities/Icon"
 import Dropdown from "../../../utilities/Dropdown"
+
 const BranchForm = ({ setOpen }) => {
 
     const [ branch, setBranch ] = useState("")
-    const [ launch, setLaunch ] = useState("Today")
+    const [ launch, setLaunch ] = useState("today")
     const [ code, setCode ] = useState("")
     const [ name, setName ] = useState("")
     const [ programme, setProgramme] = useState("B.E")
@@ -20,8 +21,8 @@ const BranchForm = ({ setOpen }) => {
     useEffect(() => {
 
         if(submit) {
-            axios.post(process.env.NEXT_PUBLIC_URL + '/admin/branch/manage', data)
             let data = { branch, launchDate: launch, code, name, key, capacity: cap, programme: programme }
+            axios.post(process.env.NEXT_PUBLIC_URL + '/admin/branch/manage', data)
                 .then(response => { setSubmit(false); setOpen(false) })
                 .catch(err => console.log(err.message))
         }
@@ -64,10 +65,10 @@ const Branches = () => {
 
     useEffect(() => {
 
-        axios.get(process.env.NEXT_PUBLIC_URL+'/admin/branch')
+        axios.get(process.env.NEXT_PUBLIC_URL + '/admin/branch')
             .then(response => {
 
-                let data = response.data
+                let data = response.data ?? []
                 for(let idx in data)
                     data[idx].launchDate = data[idx].launchDate.split('T')[0]
                 setData(data)
@@ -80,17 +81,16 @@ const Branches = () => {
         if(JSON.stringify(editedDoc) != "{}")
             for(let idx in data)
                 if(data[idx]._id == editedDoc._id) {
-                    axios.post(process.env.NEXT_PUBLIC_URL+'/admin/branch/manage', editedDoc)
+                    axios.post(process.env.NEXT_PUBLIC_URL + '/admin/branch/manage', editedDoc)
                         .then(response => {
                             data[idx] = {...editedDoc}
                             setData([...data])
-                            console.log(data[idx])
                         }).catch(err => console.log(err.message))
                 }
     }, [ editedDoc ])
 
     return (data ? <>
-        <Table editable data={data} update={setEditedDoc}/><br/>
+        <Table editable data={data} update={setEditedDoc} indexed/><br/>
         <Button name="Add Branch" icon="add" color="blue" event={() => setOpen(true)}/>
         { open && <BranchForm setOpen={setOpen}/> }
         </> : <div>Loading...</div>

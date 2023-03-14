@@ -1,0 +1,47 @@
+const tableSchedule = [ 
+    'Monday 1', 
+    'Monday 2', 
+    'Monday 3', 
+    'Monday 4', 
+    'Monday 5', 
+    'Monday 6', 
+    'Monday 7', 
+    'Monday 8',
+
+    'Tuesday 1',
+    'Tuesday 2',
+    'Tuesday 3',
+    'Tuesday 4',
+    'Tuesday 5',
+    'Tuesday 6',
+    'Tuesday 7',
+    'Tuesday 8',
+    
+    'Wednesday 1',
+    'Wednesday 2',
+    'Wednesday 3',
+    'Wednesday 4',            
+    'Wednesday 5',
+    'Wednesday 6',    
+    'Wednesday 7',
+    'Wednesday 8',
+
+    'Thursday 1',
+    'Thursday 2',
+    'Thursday 3',
+    'Thursday 4',
+    'Thursday 5',
+    'Thursday 6',
+    'Thursday 7',
+    'Thursday 8',
+
+    'Friday 1',
+    'Friday 2',
+    'Friday 3',
+    'Friday 4',
+    'Friday 5',
+    'Friday 6',
+    'Friday 7',
+    'Friday 8'
+];
+export default tableSchedule;

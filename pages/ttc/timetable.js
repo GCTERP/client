@@ -66,8 +66,8 @@ const Timetable = () => {
             let data = response.data
             console.log(data)
             setTableData(data.courses.filter(doc => doc.semester == 7))
-
-            const cc = [...new Set(data.courses.map(course => course.courseCode))];
+            setInorVar(data.courses)
+            const cc = ["Clear Period", ...new Set(data.courses.map(course => course.courseCode))];
             setCourseCodeData(cc)
         })
         .catch(err => console.log(err.message))
@@ -131,11 +131,17 @@ const Timetable = () => {
         for(let course of tableData) {
             for(let cell of course.schedule) {
                 let r = Math.floor(cell / 10), c = cell % 10
-                test1[r - 1]["Period " + c] = course.courseCode
+                if(test1[r - 1]["Period " + c] == "")
+                    test1[r - 1]["Period " + c] = course.courseCode
+                else
+                test1[r - 1]["Period " + c] += " / " + course.courseCode
             }
         }
         dummy = [...test1]
         setTableValue([...dummy])
+
+        const cc = ["Clear Period", ...new Set(tableData.map(course => course.courseCode))];
+        setCourseCodeData(cc)
 
     }, [tableData])
 
@@ -169,7 +175,24 @@ const Timetable = () => {
             for(let period of selectedPeriodList) {
                 let keys = period.value.split(" ")
                 if(obj["DayOrder"] == keys[0])
-                    obj["Period " + keys[1]] = courseCode
+                    if(courseCode == "Clear Period")
+                        obj["Period " + keys[1]] = ""
+                    else
+                        if(obj["Period " + keys[1]]=="")
+                            obj["Period " + keys[1]] = courseCode
+                        else{
+                            let cr = obj["Period " + keys[1]].split(" / ")
+                            let f = false
+                            for(let i of cr){
+                                if(i==courseCode){
+                                    f=true;
+                                    break;
+                                }
+                            }
+                            if(f==false){
+                                obj["Period " + keys[1]] += " / " + courseCode
+                            }
+                        }
             }
             dummy.push(obj)
         }
@@ -201,12 +224,16 @@ const Timetable = () => {
             console.log(row)
 
             for(let key of Object.keys(row)) {
-                if(key != "DayOrder")
-                    for(let course of dummy) {
-                        if(course.courseCode == row[key]) {
-                            course.schedule.push((idx+1)*10 + parseInt(key.charAt(key.length - 1)))
+                if(key != "DayOrder"){
+                    let sp = row[key].split(" / ");
+                    for(let cr of sp){
+                        for(let course of dummy) {
+                            if(course.courseCode == cr) {
+                                course.schedule.push((idx+1)*10 + parseInt(key.charAt(key.length - 1)))
+                            }
                         }
-                    }                    
+                    }
+                }                    
             }
             // row.map((cell, cidx) => {
             //     if(cidx != 0)
@@ -237,7 +264,7 @@ const Timetable = () => {
 
     // Cancel Button Functionality
     const cancelData = () => { 
-        setTableData(ttDataTest.courses.filter(doc => doc.semester == semester))
+        setTableData(inorVar.filter(doc => doc.semester == semester))
         setEditBtn(false)    
         setUpdate(false)
     }

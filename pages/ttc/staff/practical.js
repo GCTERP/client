@@ -1,11 +1,7 @@
-import { add } from "date-fns"
 import { use, useEffect, useState } from "react"
 import Button from "../../../utilities/Button"
 import Dropdown from "../../../utilities/Dropdown"
 import MultiSelect from "../../../utilities/MultiSelect"
-import Table from "../../../utilities/Table"
-import groupsData from "../../../test/groupsTestData"
-import Icon from "../../../utilities/Icon"
 import axios from "axios"
 
 
@@ -13,11 +9,11 @@ const Practical = () => {
 
     // Get data from the api
 
-    const [fetchData, setFetchData] = useState(groupsData.courses)
-    const [getSemester, setSemester] = useState(['1'])
+    const [fetchData, setFetchData] = useState({})
+    const [getSemester, setSemester] = useState([''])
     const [getCourseCode, setCourseCode] = useState([])
     const [getCourseName, setCourseName] = useState('')
-    const [getBatch, setBatch] = useState(['2023'])
+    const [getBatch, setBatch] = useState([''])
     const [addData, setAddData] = useState([])
     const [revert, setRevert] = useState([])
     const [courseCode, setSelectedCourseCode] = useState("")
@@ -28,7 +24,7 @@ const Practical = () => {
     const [selectedBatchNumber, setSelectedBatchNumber] = useState("")
     const [selectedCI, setSelectedCI] = useState("")
     const [flag, setFlag] = useState(false)
-    const [facultyData, setFacultyData] = useState(groupsData.faculty)
+    const [facultyData, setFacultyData] = useState({})
 
 
     useEffect(() => {
@@ -38,10 +34,10 @@ const Practical = () => {
             console.log(data)
             setFetchData(data.courses)
             setRevert(data.courses) // need to be tested
-
             const cc = [...new Set(data.courses.map(course => course.courseCode))];
             setCourseCode(cc)
-
+            setBatch(data.courses[0].batch)
+            setSemester(data.courses[0].semester)
             setCourseIncharge(data.faculty.map(fac => fac.Name))
         })
         .catch(err => console.log(err.message))

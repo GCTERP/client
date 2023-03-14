@@ -11,7 +11,7 @@ import Icon from "../utilities/Icon.js"
  * @param disabled @type Boolean - Disabled dropdown
  * @param special @type Boolean - UI Rich Component
  */
-const Dropdown = ({name, data, update, initial, disabled, special}) => {
+const Dropdown = ({name, data, update, initial, disabled, special,event}) => {
 
     const [ option, setOption ] = useState(initial ?? data[0])
     const [ expand, setExpand ] = useState(false)
@@ -19,15 +19,15 @@ const Dropdown = ({name, data, update, initial, disabled, special}) => {
     // useEffect(() => setOption(data[0]), [ data ])
 
     return (!disabled ? (special ? <>
-        <div className="relative border w-fit rounded pl-2">
-            <div className="absolute text-sm w-fit bg-white ml-[0.5px] px-1 -mt-3">{ name }</div>
+        <div className="relative border w-fit rounded pl-2 border-blue-500">
+            <div className="absolute text-sm w-fit bg-white ml-[0.5px] px-1 -mt-3 text-blue-500">{ name }</div>
             <div className="flex w-fit justify-between text-sm px-1 pt-1 cursor-pointer" onClick={() => setExpand(!expand)}>
                 { typeof(option) == typeof(1) ? option : option.charAt(0).toUpperCase() + option.slice(1) }&nbsp;&nbsp;&nbsp;
                 <Icon name={`expand_${expand ? "less" : "more"}`}/>
             </div>
             <ul className={`absolute max-h-52 overflow-auto overscroll-none z-50 bg-white mt-1 px-3 -ml-2 border-blue-500 py-1 w-fit ${expand ? "" : "hidden"}`}>
             {
-                data.map((ele, idx) => <li key={idx} onClick={() => { setOption(data[idx]); update(data[idx]); setExpand(false) }} className={`text-sm cursor-pointer text-slate-400 hover:text-opacity-80 rounded p-1 my-1 hover:bg-blue-50 hover:text-blue-500 ${option == data[idx] && "text-blue-500 bg-blue-50"}`}>{ typeof(ele) == typeof(1) ? ele : ele.charAt(0).toUpperCase() + ele.slice(1) }</li>)
+                data.map((ele, idx) => <li key={idx} onClick={() => { setOption(data[idx]); update(data[idx]); setExpand(false); event() }} className={`text-sm cursor-pointer text-slate-400 hover:text-opacity-80 rounded p-1 my-1 hover:bg-blue-50 hover:text-blue-500 ${option == data[idx] && "text-blue-500 bg-blue-50"}`}>{ typeof(ele) == typeof(1) ? ele : ele.charAt(0).toUpperCase() + ele.slice(1) }</li>)
             }
             </ul>
         </div></> :
