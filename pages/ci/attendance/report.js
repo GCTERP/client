@@ -1,10 +1,8 @@
 import Table from "../../../utilities/Table";
 import Dropdown from "../../../utilities/Dropdown";
-import Download from "../../../utilities/Download";
 import Button from "../../../utilities/Button";
 import Input from "../../../utilities/Input";
 import { useEffect, useState } from "react"
-import { course } from "../../../test/attendanceReportTest"
 import axios from "axios"
 
 const Report = () => {
@@ -30,28 +28,28 @@ const Report = () => {
     let temp={}
 
     //EITHER THIS
-    useEffect( () => {
+    // useEffect( () => {
 
-        setResData(course.courses.map(doc=>({...doc})))
-        setStartDate(course.start_date)
-        setEndDate(course.end_date)
-        setCourseCode(["--None--", ...new Set(course.courses.map(item=>item.courseCode))])
-    },[])
+    //     setResData(course.courses.map(doc=>({...doc})))
+    //     setStartDate(course.start_date)
+    //     setEndDate(course.end_date)
+    //     setCourseCode(["--None--", ...new Set(course.courses.map(item=>item.courseCode))])
+    // },[])
 
 
     //OR THIS
-    // useEffect( () => {
-    //     axios.get(process.env.NEXT_PUBLIC_URL + '/ci/courses?facultyId=63f42892a8a5c50a79ed2664' )
-    //     .then( response => {
-    //         console.log(response.data)
-    //         setResData(response.data.courses.map(doc=>({...doc})))
-    //         setStartDate(respnse.start_date)
-    //         setEndDate(response.end_date)
-    //         setCourseCode(["--None--", ...new Set(response.courses.map(item=>item.courseCode))])
+    useEffect( () => {
+        axios.get(process.env.NEXT_PUBLIC_URL + '/ci/courses?facultyId=63f42892a8a5c50a79ed2664' )
+        .then( response => {
+            console.log(response.data)
+            setResData(response.data.courses.map(doc=>({...doc})))
+            setStartDate(respnse.start_date)
+            setEndDate(response.end_date)
+            setCourseCode(["--None--", ...new Set(response.courses.map(item=>item.courseCode))])
 
-    //     })
-    //     .catch(err => console.log(err.message))
-    // },[])
+        })
+        .catch(err => console.log(err.message))
+    },[])
 
     useEffect(() => {
         if(flag) {
