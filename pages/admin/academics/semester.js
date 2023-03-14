@@ -119,13 +119,16 @@ const Semester = () => {
         axios.get(process.env.NEXT_PUBLIC_URL + "/admin/semestermeta")
             .then(response => {
                 let result = response.data.map(doc => ({ batch: doc.batch, sem: doc.sem, status: 0 }))
+                console.log(response.data)
                 let docs = response.data ? response.data.map(doc => {
                     let keys = [ "ut", "assignment", "tutorial", "schedule", "freeze", "deadline", "feedback", "enrollment", "courseRegistration" ]
                     doc.begin = doc.begin.split("T")[0]
                     doc.end = doc.end.split("T")[0]
                     for(let key of keys)
-                        for(let idx of Object.keys(doc[key]))
-                            doc[key][idx] = doc[key][idx] ?? ""
+                        if(doc[key])
+                            for(let idx of Object.keys(doc[key]))
+                                doc[key][idx] = doc[key][idx] ?? ""
+                        else doc[key] = ""
                     return doc
                 }) : []
                 setBatches(result)
@@ -151,13 +154,13 @@ const Semester = () => {
                 sems.push(i + 1)
             setSemesters([...sems])
             setSemester(batch.sem)
-            // if(document) {
+            if(document) {
                 document.batch = batch.batch
                 document.sem = batch.sem
                 document.begin = batch.startDate
                 document.end = batch.endDate
                 setDocument({...document})
-            // }
+            }
         }
 
     }, [ batch ]);
@@ -168,14 +171,14 @@ const Semester = () => {
             batches.push(newBatch)
             batches.sort((a, b) => a.batch > b.batch)
             setBatches([...batches])
-            // if(document) {
+            if(document) {
                 document.batch = newBatch.batch
                 document.sem = newBatch.sem
                 document.regulation = newBatch.regulation
                 document.begin = newBatch.startDate
                 document.end = newBatch.endDate
                 setDocument({...document})
-            // }
+            }
         }
 
     }, [ newBatch ])
