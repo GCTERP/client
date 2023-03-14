@@ -6,9 +6,11 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 const Attendance = () => {
 
-    const [ data, setData] = useState([])
-    const [ fields, setFields] = useState([])
-    const [ markAttdBtn, setMarkAttdBtn] = useState(false)
+    const [ data, setData ] = useState([])
+    const [ fields, setFields ] = useState([])
+    const [ markAttdBtn, setMarkAttdBtn ] = useState(false)
+    const [ reloadAttd, setReloadAttd ] = useState(false)
+    const [ save,setSave ] = useState(false)
     const [ edit, setEdit ] = useState(0)
     const [ dropPeriod, setDropPeriod ] = useState(false)
     const [ calDate, setCalDate] = useState("")
@@ -19,7 +21,8 @@ const Attendance = () => {
     const [ present, setPresent ] = useState([''])
     const [ backup, setBackup ] = useState([''])
 
-    const [postId, setPostId] = useState([])
+    const [ postId, setPostId] = useState([])
+    const [ bkupPost, setbkupPost ] = useState([])
     const [freezed, setFreezed] = useState(0)
     const [attdData, setAttdData] = useState([])
 
@@ -73,9 +76,43 @@ const Attendance = () => {
                 setPresent(dummy)
             })
             .catch(err => console.log(err.message))
+            setbkupPost(postId)
             setMarkAttdBtn(false)
         }
     },[markAttdBtn])
+
+    //Reload on save button
+    useEffect(() => {
+
+        if(reloadAttd) {
+        
+            console.log(postId[0]._id)
+            axios.get(process.env.NEXT_PUBLIC_URL + '/ci/attendance?_id=' + bkupPost[0]._id + '&courseId=' + bkupPost[0].courseId )
+            .then(response => {
+                let data = response.data
+                setAttdData(data)
+
+                let dummy = []
+                data.map(student => {
+                    if((student.present==true)&&(student.onduty==false))
+                        dummy.push(0)
+                    else if((student.present==false)&&(student.onduty==false))
+                        dummy.push(1)
+                    else if((student.present==false)&&(student.onduty==true))
+                        dummy.push(2)
+                    else
+                        dummy.push(3)
+                })
+
+                setBackup(dummy)
+                console.log("bsha",dummy)
+                setPresent(dummy)
+            })
+            .catch(err => console.log(err.message))
+            setReloadAttd(false)
+            setSave(false)
+        }
+    },[reloadAttd])
 
     //API DROP PERIOD
     useEffect(() => {
@@ -95,6 +132,7 @@ const Attendance = () => {
             axios.post(process.env.NEXT_PUBLIC_URL + '/ci/attendance', attdData)
             .then(response => {
                 console.log(response.data)
+                setReloadAttd(true)
             })
             .catch(err => console.log(err.message))
             setFlag(false)
@@ -153,7 +191,7 @@ const Attendance = () => {
     }
 
     const saveData = (d) => {
-
+        setSave(true)
         let dummy = attdData.map(d => ({...d}))
 
         dummy.map((datum, idx) => {
@@ -177,7 +215,7 @@ const Attendance = () => {
 
         setAttdData(dummy)
         setFlag(true)
-
+        //setReloadAttd(true)
     }
 
     const cancelData = () => {        
@@ -198,7 +236,7 @@ const Attendance = () => {
             setEdit(val)
         }
 
-        const omit = ["_id", "studentId", "present", "onduty"]
+        const omit = ["_id", "marked", "studentId", "present", "onduty"]
         const omitFields = (field) => !omit.some((item) => item == field)
 
         setFields(ciAttendanceTestData.students && ciAttendanceTestData.students.length > 0
@@ -256,7 +294,7 @@ const Attendance = () => {
 
                     <div className="flex pt-10 flex-wrap">
 
-                        { (attdData.length > 0 && present.length > 0)? 
+                        { (attdData.length > 0 && present.length > 0 && !reloadAttd)? 
                             <div className="relative p-1.5 w-fit inline-block align-middle">
                                 <div className=" overflow-hidden overflow-x-auto shadow-md sm:rounded-lg border">
                                     <table className="min-w-full divide-y divide-gray-200 text-sm text-left sm:rounded-lg">
@@ -325,16 +363,17 @@ const Attendance = () => {
 
                     </div>
 
-                    {edit&&
+                    {edit&&!save?
                         <div className="flex justify-end flex-row m-10">
                             <div className="mx-4 w-1/8">
                                 <Button color={'blue'} name={"Cancel"} outline={true} event={cancelData} />
                             </div>
                             <div className="mx-4 w-1/6">
-                                <Button color={'blue'} name={"Save"} outline={false} event={saveData} />
+                                <Button color={'blue'} name={"Save"} outline={save} event={saveData} />
                             </div>
-                        </div>
+                        </div>:""
                     }
+                    
                 </div>
                 <div className="w-3/12 border-l">
                     <div className="ml-6 flex flex-col h-screen">
