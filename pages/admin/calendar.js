@@ -6,6 +6,7 @@ import Icon from '../../utilities/Icon'
 import Input from '../../utilities/Input'
 import Switch from '../../utilities/Switch'
 import Dropdown from '../../utilities/Dropdown'
+import Button from '../../utilities/Button'
 
 const MakeCalendar = ({ setOpen }) => {
 
@@ -61,88 +62,72 @@ const MakeCalendar = ({ setOpen }) => {
 
 }
 
-const About = ({ selectedDay, months, batches }) => {
+const About = ({ selectedDay, months, batches: defaultBatches }) => {
     const [isWorkingDay, setWorkingDay] = useState(selectedDay.isWorkingDay)
     const [isEdit, setEdit] = useState(true)
     const [save, setSave] = useState(false)
-    const [isPast, setPast] = useState(false)
-    const [batch1, setBatch1] = useState(selectedDay.batches.includes(batches[0]))
-    const [batch2, setBatch2] = useState(selectedDay.batches.includes(batches[1]))
-    const [batch3, setBatch3] = useState(selectedDay.batches.includes(batches[2]))
-    const [batch4, setBatch4] = useState(selectedDay.batches.includes(batches[3]))
-    const [state, setState] = useState([batch1, batch2, batch3, batch4])
+    const [isfuture, setfuture] = useState(false)
+    const [ batches, setBatches ] = useState(defaultBatches.map(doc => ({ check: selectedDay.batches ? selectedDay.batches.includes(doc) : false, batch: doc }) ))
     const [order, setOrder] = useState(selectedDay.order)
 
     useEffect(() => {
         let currentDate = new Date(selectedDay.date).toDateString()
         let today = new Date().toDateString()
-        let past = new Date(currentDate) < new Date(today)
+        let future = new Date(currentDate) > new Date(today)
         setEdit(true)
         setOrder(selectedDay.order ?? 1)
+        setBatches(defaultBatches.map(doc => ({ check:selectedDay.batches ? selectedDay.batches.includes(doc) : false, batch: doc }) ))
         setWorkingDay(selectedDay.isWorkingDay)
-        setBatch1(selectedDay.batches.includes(batches[0]))
-        setBatch2(selectedDay.batches.includes(batches[1]))
-        setBatch3(selectedDay.batches.includes(batches[2]))
-        setBatch4(selectedDay.batches.includes(batches[3]))
-        setPast(past)
+        setfuture(future)
     }, [selectedDay])
-    useEffect(() => {
-        setState([batch1, batch2, batch3, batch4])
-    }, [batch1, batch2, batch3, batch4])
+
     useEffect(() => {
         if (save) {
             selectedDay.isWorkingDay = isWorkingDay
-            setSave(false)
-            // axios.put(NEXT_PUBLIC_URL + "/admin/calendar/")
+            let data = { date: selectedDay.date, order, batches: isWorkingDay ?  batches.map(doc => doc.check ? doc.batch : false).filter(doc => doc) : [], isWorkingDay: isWorkingDay }
+            axios.put(process.env.NEXT_PUBLIC_URL + "/admin/calendar/workingday", data)
+                .then(response=> setSave(false))
+                .catch(err => console.log(err.message))
         }
     }, [save])
 
-    selectedDay.batches = selectedDay.batches.sort((a, b) => (b - a))
     let date = selectedDay.date.split("T")[0].split("-")
     date = months[selectedDay.month] + " " + date[2] + ",  " + date[0]
     return (
         selectedDay.day != 0 ? <>
             <div className='h-2/3'>
-                <div className={`text-lg font-semibold text-${isPast ? "slate-500" : "blue-500"} flex justify-around ml-2 p-1 mt-10 `}>
+                <div className={`text-lg font-semibold text-${!isfuture ? "slate-500" : "blue-500"} flex justify-around ml-2 p-1 mt-10 `}>
                     {date}
-                    {!isPast && <div onClick={() => { setEdit(!isEdit) }} className={` w-fit cursor-pointer rounded-lg text-m ${isEdit ? "text-blue-500" : "text-red-500"}`}>
+                    {isfuture && <div onClick={() => { setEdit(!isEdit) }} className={` w-fit cursor-pointer rounded-lg text-m ${isEdit ? "text-blue-500" : "text-red-500"}`}>
                         <Icon name={isEdit ? "edit" : "close"} />
                     </div>}
                 </div>
                 <div className='flex justify-around items-center py-5'>
                     <label className='text-m'>Working Day</label>
                     <Switch initial={isWorkingDay} toggle={setWorkingDay} editable={!isEdit} />
+                    {/* <input name="workingDay" className="p-5 m-2" disabled={!isEdit ? "" : "disabled"} checked={isWorkingDay} type="checkbox" onChange={(e) => setWorkingDay(e.target.checked)}/> */}
                 </div>
                 <div className='flex justify-around py-5 text-m items-center'>
                     <label>Order</label>
-                    {isEdit ? <label>{selectedDay.order ?? "--null--"}</label> : <Dropdown name="" data={[1, 2, 3, 4, 5]} update={setOrder} initial={selectedDay.order ?? 1} />}
+                    {isEdit ? <label>{selectedDay.order ?? "--null--"}</label> : <Dropdown name="" data={[1, 2, 3, 4, 5]} update={setOrder} special initial={selectedDay.order ?? 1} />}
                 </div>
                 <div className='flex justify-around py-5'>
                     <div>
                         <label className='text-xl justify-center flex pb-5'>Batches</label>
                         <div className="grid grid-cols-4 gap-4">
-                            {isPast ? selectedDay.batches.map(batch =>
-                                <>
-                                    <Icon name="check" ></Icon>
-                                    <div>{batch}</div>
-                                </>
-                            ) :
+                            {
                                 batches.map((batch, idx) =>
                                     <>
                                     <div className="flex col-span-2 gap-2">
-                                        {isEdit ? <Icon name={state[idx] && "check"} ></Icon> :
+                                        {isEdit ? <Icon name={batch.check && "check"} ></Icon> :
                                             <input
-                                                checked={state[idx]}
-                                                onChange={() => {
-                                                    switch (idx) {
-                                                        case 0: setBatch1(!batch1); break
-                                                        case 1: setBatch2(!batch2); break
-                                                        case 2: setBatch3(!batch3); break
-                                                        case 3: setBatch4(!batch4); break
-                                                    }
+                                                checked={batch.check}
+                                                onChange={(e) => {
+                                                    batches[idx].check = e.target.checked
+                                                    setBatches([...batches])
                                                 }}
-                                                name={batches[idx]} type="checkbox"></input>}
-                                        <label>{batches[idx]}</label>
+                                                name={batch.batch} type="checkbox"></input>}
+                                        <label>{batch.batch}</label>
                                     </div>
                                     </>
                                 )}
@@ -171,9 +156,70 @@ const ManageBatch = () => {
 }
 
 
-const ManageSaturday = () => {
+const ManageSaturday = ({ batches: defaultBatches }) => {
+
+    let today = new Date()
+    today = today.getFullYear() + "-" + ((today.getMonth() + 1) < 10 ? "0" + (today.getMonth() + 1) : (today.getMonth() + 1)) + "-" + today.getDate()
+
+    const [ batches, setBatches ] = useState(defaultBatches.map(doc => ({ check: false, batch: doc }) ))
+    const [ fromDate, setFromDate ] = useState(null)
+    const [ toDate, setToDate ] = useState(null)
+    const [ workingDay, setWorkingDay ] = useState(true)
+    const [ maxDate, setMaxDate ] = useState(new Date())
+    const [ save, setSave ] = useState(false)
+    const [isEdit, setEdit] = useState(true)
+
+
+    useEffect(() => {
+
+        axios.get(process.env.NEXT_PUBLIC_URL + "/admin/calendar/minmaxdate")
+            .then(response => {
+                setMaxDate(response.data.max.split('T')[0])
+            }).catch(err => console.log(err.message))
+
+    }, [])
+
+    useEffect(() => {
+
+        if(save) {
+            let data = { from: fromDate, to: toDate, batches: batches.map(doc => doc.check ? doc.batch : false).filter(doc => doc), isWorkingDay: workingDay, order: 1 }
+            // console.log(data)
+            // setSave(false)
+            axios.put(process.env.NEXT_PUBLIC_URL + "/admin/calendar/manage/saturday", data)
+                .then(response => {
+                    setSave(false)
+                    setEdit(true)})
+                .catch(err => console.log(err.message))
+        }
+
+    }, [ save ])
+
     return (
-        <div>Manage Saturday</div>
+        <div className="p-5 mt-12">
+            <Input name="from" type="date" min={today} value={fromDate ?? today} update={e => setFromDate(e)} disabled={isEdit ? "disabled" : ""}/><br/>
+            <Input name="to" type="date" max={maxDate} value={toDate} update={e => setToDate(e)} disabled={isEdit ? "disabled" : ""}/>
+            <div className='flex justify-around items-center py-5'>
+                <label className="text-sm">Working Day</label>
+                <Switch initial={workingDay} toggle={setWorkingDay} editable={!isEdit}/>
+            </div>
+            <div className="grid grid-cols-4 gap-4">
+            { batches.map((batch, idx) =><>
+                <div className="flex col-span-2 gap-2">
+                    <input
+                        checked={batch.check}
+                        disabled={isEdit ? "disabled" : ""}
+                        onChange={(e) => { batches[idx].check = e.target.checked; setBatches([...batches]) }}
+                        name={batch.batch} type="checkbox" />
+                    <label>{batch.batch}</label>
+                </div></>
+            )}
+            </div>
+            <div className="m-auto w-fit mt-5 ">
+                {!isEdit ? <><Button name="Save" color="blue" event={() => setSave(true)}/><Button  name="Cancel" color="red" event={() => setEdit(true)}/></> :
+                <Button name="Edit" color="blue" outline event={() => setEdit(false)} />}
+            </div>
+        </div>
+
     )
 }
 
@@ -192,11 +238,11 @@ const Calendar = () => {
     let [currentMonth, setCurrentMonth] = useState(new Date().getMonth())
     let [today, setToday] = useState(new Date())
     let [showCal, setShowCal] = useState(false)
+    const [batches, setBatches] = useState([])
 
-    const [batches, setBatches] = useState()
     useEffect(() => {
-        axios.get(process.env.NEXT_PUBLIC_URL + "/admin/batch").
-            then(response => {
+        axios.get(process.env.NEXT_PUBLIC_URL + "/admin/batch")
+            .then(response => {
                 let data = response.data.batches
                 setBatches(data.slice(0, 4))
             })
@@ -289,7 +335,7 @@ const Calendar = () => {
                         data.length > 0 &&
                         <div className='h-5/6'>
                             {actions[0] == action && <About selectedDay={data.filter(doc => doc._id == selectedDay)[0]} months={months} batches={batches} />}
-                            {actions[1] == action && <ManageSaturday />}
+                            {actions[1] == action && <ManageSaturday batches={batches}/>}
                             {actions[2] == action && <DeclareHolidays />}
                             {actions[3] == action && <ManageBatch />}
                         </div>
@@ -303,7 +349,7 @@ const Calendar = () => {
 
 const Cell = ({ day, today, sunday, update, selectedDay }) => {
     return (
-        <div className={`h-28 group rounded-lg border relative col-start-${day.day + 1} ${today ? "border-blue-400" : ""} hover:bg-gray-50`} onClick={() => { update(day._id); }}>
+        <div className={`h-28 group rounded-lg border relative col-start-${day.day + 1} ${today ? "border-blue-400" : ""} ${selectedDay == day._id && "bg-blue-50"} hover:bg-gray-50`} onDoubleClick={() => { update(day._id); }}>
             <div className={`w-full h-full flex justify-center items-center text-${!day.isWorkingDay ? "gray" : "blue"}-500`}>
                 {(new Date(day.date)).getDate()}
             </div>
