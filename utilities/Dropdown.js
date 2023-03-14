@@ -13,10 +13,10 @@ import Icon from "../utilities/Icon.js"
  */
 const Dropdown = ({name, data, update, initial, disabled, special}) => {
 
-    const [ option, setOption ] = useState(data[0])
+    const [ option, setOption ] = useState(initial ?? data[0])
     const [ expand, setExpand ] = useState(false)
 
-    useEffect(() => setOption(data[0]), [ data ])
+    // useEffect(() => setOption(data[0]), [ data ])
 
     return (!disabled ? (special ? <>
         <div className="relative border w-fit rounded pl-2">

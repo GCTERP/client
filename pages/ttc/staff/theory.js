@@ -18,7 +18,7 @@ const Theory = () => {
 
         if(save) {
             console.log(courses)
-            axios.post('http://192.168.238.12:5000/ttc/staff', { courses })
+            axios.post(process.env.NEXT_PUBLIC_URL + '/ttc/staff', { courses })
                 .then(res => {
                     console.log(res.data)
                     setSave(false)
@@ -30,7 +30,7 @@ const Theory = () => {
 
     useEffect(() => {
 
-        axios.get('http://192.168.238.12:5000/ttc/staff', { params: { branch: "Information Technology" } })
+        axios.get(process.env.NEXT_PUBLIC_URL + '/ttc/staff', { params: { branch: "Information Technology" } })
             .then(res => {
                 let courses = res.data.courses
                 courses.map((course, idx) => {

@@ -11,7 +11,7 @@ const FA = () => {
     const [ data, setData ] = useState(null)
     const [ catalog, setCatalog ] = useState(null)
     const [ current, setCurrent ] = useState(null)
-    const [ batch, setBatch ] = useState(2019)
+    const [ batch, setBatch ] = useState()
     const [ semester, setSemester ] = useState(1)
     const [ fas, setFas ] = useState(null)
     const [ purged, setPurged ] = useState(null)
